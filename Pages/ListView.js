@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Input, StyleSheet, TextInput, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const locations = [
   {
@@ -62,7 +63,7 @@ const locations = [
 function ListView() {
   const [searchBarClicked, setSearchBarClicked] = React.useState(false);
   return (
-    <>
+    <SafeAreaView>
       <View>
         <TextInput
           placeholder="Search for a location..."
@@ -87,7 +88,7 @@ function ListView() {
           );
         })}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 }
 
