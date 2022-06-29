@@ -6,17 +6,36 @@ import ListView from "./Pages/ListView";
 import Map from "./Pages/Map";
 import Bookmarks from "./Pages/Bookmarks";
 import Account from "./Pages/Account";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={ListView} />
-        <Tab.Screen name="Map" component={Map} />
-        <Tab.Screen name="Account" component={Account} />
-        <Tab.Screen name="Bookmarks" component={Bookmarks} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={ListView}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Map"
+            component={Map}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Bookmarks"
+            component={Bookmarks}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Account"
+            component={Account}
+            options={{ headerShown: false }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
