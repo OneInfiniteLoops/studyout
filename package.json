@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "react-native-gesture-handler": "^2.5.0",
     "react-native-maps": "^0.31.1"
   },
   "private": true
