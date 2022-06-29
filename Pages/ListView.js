@@ -9,8 +9,8 @@ const locations = [
     location_name: "Costa Market Street",
     location_address: "28 Market Street, Manchester M1 1PW England",
     postcode: "M11PW",
-    longitude: "53.48376591153698",
-    latitude: "-2.242955959297516",
+    latitude: "53.48376591153698",
+    longitude: "-2.242955959297516",
     features: {
       wifi: true,
       food: true,
@@ -27,8 +27,8 @@ const locations = [
     location_name: "Manchester Central Library",
     location_address: "St Peter's Square, Manchester M2 5PD",
     postcode: "M2 5PD",
-    longitude: "53.478030039764135",
-    latitude: "-2.2446160630014624",
+    latitude: "53.478030039764135",
+    longitude: "-2.2446160630014624",
     features: {
       wifi: true,
       food: true,
@@ -45,8 +45,8 @@ const locations = [
     location_name: "Longsight Library",
     location_address: "519 Stockport Rd, Longsight, Manchester M12 4NE",
     postcode: "M12 4NE",
-    longitude: "53.458445275050494, -2.201442223181674",
-    latitude: "-2.201442223181674",
+    latitude: "53.458445275050494",
+    longitude: "-2.201442223181674",
     features: {
       wifi: true,
       food: true,
@@ -78,7 +78,9 @@ function ListView() {
           return (
             <View style={styles.locationCard} key={location.location_id}>
               <Text style={styles.locationName}>{location.location_name}</Text>
-              <Text style={styles.locationAddress}>{location.location_address}</Text>
+              <Text style={styles.locationAddress}>
+                {location.location_address}
+              </Text>
               <Text style={styles.opening_hours}>{location.opening_hours}</Text>
               <Image
                 source={{ uri: location.image_url }}
