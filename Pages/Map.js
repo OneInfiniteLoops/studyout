@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Platform } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
@@ -80,6 +80,17 @@ export default function Map() {
     }, []);
   }
 
+  if (Platform.OS === "ios") {
+    useEffect(() => {
+      (async () => {
+        let location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setLocation(location);
+      })();
+    }, []);
+  }
+
   return (
     <View>
       <MapView
@@ -87,6 +98,21 @@ export default function Map() {
         apikey={GOOGLE_MAPS_KEY}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
+        region={
+          location != null
+            ? {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }
+            : {
+                latitude: 54,
+                longitude: -3,
+                latitudeDelta: 10,
+                longitudeDelta: 10,
+              }
+        }
       >
         {locations.map((location) => (
           <Marker
