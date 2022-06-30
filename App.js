@@ -7,6 +7,7 @@ import Map from "./Pages/Map";
 import Bookmarks from "./Pages/Bookmarks";
 import Account from "./Pages/Account";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GOOGLE_MAPS_KEY} from '@env'
 
 const Tab = createBottomTabNavigator();
 export default function App() {
