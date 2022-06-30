@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
 
 const locations = [
@@ -83,6 +84,7 @@ export default function Map() {
     <View>
       <MapView
         style={styles.map}
+        apikey={GOOGLE_MAPS_KEY}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
       >
