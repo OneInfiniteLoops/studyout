@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 const locations = [
   {
@@ -81,9 +82,17 @@ function ListView() {
         />
       </View>
       <ScrollView>
-        {locations.map((location) => {
+        {locations.map((location, index) => {
           return (
-            <View style={styles.locationCard} key={location.location_id}>
+            <View
+              style={[
+                styles.locationCard,
+                index === locations.length - 1
+                  ? { marginBottom: useBottomTabBarHeight() + 20 }
+                  : { marginBottom: 10 },
+              ]}
+              key={location.location_id}
+            >
               <Text style={styles.locationName}>{location.location_name}</Text>
               <Text style={styles.locationAddress}>
                 {location.location_address}
