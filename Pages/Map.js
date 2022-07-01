@@ -128,7 +128,6 @@ export default function Map() {
             title={locationResult.location_name}
             onPress={() => {
               setSelectedLocation(locationResult);
-              console.log(typeof locationResult.latitude);
               mapRef.current.animateToRegion(
                 {
                   latitude: Number(locationResult.latitude),
