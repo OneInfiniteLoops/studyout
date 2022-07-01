@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Dimensions, Platform } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Platform,
+  Image,
+} from "react-native";
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const locations = [
+const locationsResults = [
   {
     location_id: 1,
     location_name: "Costa Market Street",
@@ -62,7 +71,8 @@ const locations = [
 ];
 
 export default function Map() {
-  const [location, setLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   if (Platform.OS === "android") {
@@ -74,8 +84,8 @@ export default function Map() {
           return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
+        let receivedLocation = await Location.getCurrentPositionAsync({});
+        setUserLocation(receivedLocation);
       })();
     }, []);
   }
@@ -83,10 +93,10 @@ export default function Map() {
   if (Platform.OS === "ios") {
     useEffect(() => {
       (async () => {
-        let location = await Location.getCurrentPositionAsync({
+        let receivedLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Balanced,
         });
-        setLocation(location);
+        setUserLocation(receivedLocation);
       })();
     }, []);
   }
@@ -98,11 +108,12 @@ export default function Map() {
         apikey={GOOGLE_MAPS_KEY}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
+        moveOnMarkerPress={false}
         region={
-          location != null
+          userLocation != null
             ? {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
+                latitude: userLocation.coords.latitude,
+                longitude: userLocation.coords.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }
@@ -114,18 +125,50 @@ export default function Map() {
               }
         }
       >
-        {locations.map((location) => (
+        {locationsResults.map((locationResult) => (
           <Marker
-            key={location.location_id}
+            key={locationResult.location_id}
             coordinate={{
-              latitude: Number(location.latitude),
-              longitude: Number(location.longitude),
+              latitude: Number(locationResult.latitude),
+              longitude: Number(locationResult.longitude),
             }}
-            title={location.location_name}
-            description={`${location.opening_hours}`}
-          ></Marker>
+            title={locationResult.location_name}
+            onPress={() => {
+              setSelectedLocation(locationResult);
+            }}
+          >
+            <Callout tooltip>
+              <View style={styles.locationCallout}>
+                <Text style={styles.locationCalloutText}>
+                  {locationResult.location_name}
+                </Text>
+              </View>
+              <View style={styles.arrowBorder} />
+              <View style={styles.arrow} />
+            </Callout>
+          </Marker>
         ))}
       </MapView>
+
+      {selectedLocation && (
+        <View style={styles.locationCard}>
+          <Image
+            source={{ uri: selectedLocation.image_url }}
+            style={styles.locationCardImage}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.locationCardTitle}>
+              {selectedLocation.location_name}
+            </Text>
+            <Text style={styles.locationCardText}>
+              {selectedLocation.location_address}
+            </Text>
+            <Text style={styles.locationCardOpeningHours}>
+              {selectedLocation.opening_hours}
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -134,5 +177,75 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  locationCallout: {
+    flexDirection: "column",
+    alignSelf: "flex-start",
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    borderColor: "#fff",
+    borderWidth: 0.5,
+    padding: 8,
+    width: 150,
+  },
+  arrow: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#fff",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -32,
+  },
+  arrowBorder: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#007a87",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -0.5,
+  },
+  locationCalloutText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  locationCard: {
+    position: "absolute",
+    marginTop: Platform.OS === "ios" ? 590 : 510,
+    backgroundColor: "#fff",
+    width: "90%",
+    height: "20%",
+    alignSelf: "center",
+    borderRadius: 5,
+    padding: 10,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+  },
+  textContainer: {
+    width: "50%",
+    marginLeft: 20,
+    fontSize: 12,
+  },
+  locationCardTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  locationCardImage: {
+    height: "100%",
+    width: "50%",
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flex: 1,
+  },
+  locationCardOpeningHours: {
+    color: "green",
   },
 });
