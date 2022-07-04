@@ -7,9 +7,12 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+
 
 const locations = [
   {
@@ -68,7 +71,8 @@ const locations = [
   },
 ];
 
-function ListView() {
+function ListView({ navigation }) {
+  console.log(navigation.navigate)
   const [searchBarClicked, setSearchBarClicked] = React.useState(false);
   return (
     <SafeAreaView>
@@ -84,7 +88,7 @@ function ListView() {
       <ScrollView>
         {locations.map((location, index) => {
           return (
-            <View
+            <TouchableOpacity
               style={[
                 styles.locationCard,
                 index === locations.length - 1
@@ -92,6 +96,7 @@ function ListView() {
                   : { marginBottom: 10 },
               ]}
               key={location.location_id}
+              onPress={() => {navigation.navigate("PlaceView", {location: location})}}
             >
               <Text style={styles.locationName}>{location.location_name}</Text>
               <Text style={styles.locationAddress}>
@@ -102,7 +107,7 @@ function ListView() {
                 source={{ uri: location.image_url }}
                 style={styles.locationImage}
               />
-            </View>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
