@@ -19,10 +19,14 @@ export default function PlaceView(location) {
       </Text>
       <Text style={styles.features}>
         Features:{" "}
-        {location.route.params["location"]["features"]["wifi"] ? "Wi-Fi" : ""},{" "}
-        {location.route.params["location"]["features"]["food"] ? "Food" : ""},{" "}
+        {location.route.params["location"]["features"]["wifi"]
+          ? "🌐 Wi-Fi"
+          : ""}
+        ,{" "}
+        {location.route.params["location"]["features"]["food"] ? "🥪 Food" : ""}
+        ,{" "}
         {location.route.params["location"]["features"]["parking"]
-          ? "Parking"
+          ? "🅿️ Parking"
           : ""}
       </Text>
       <Text style={styles.conditions}>
