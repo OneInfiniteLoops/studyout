@@ -9,14 +9,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
   updateProfile
 } from "firebase/auth";
 
-import { authentication } from "../firebase-config"
-import { createUser } from './Utils/api';
-
+import { authentication } from '../../firebase.config';
+import { createUser, getUserById } from '../../Utils/api';
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required").min(5, 'Must be at least 5 characters').max(20, 'Must be no longer than 20 characters'),
@@ -26,16 +23,16 @@ const schema = yup.object().shape({
   password: yup
     .string()
     .required('Please Enter your password')
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-    // ),
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
 });
 
-export default function Register() {
+export default function Register({ navigation }) {
 
   const { userLogin, setUserLogin } = React.useContext(UserLoginContext);
-  const { control, handleSubmit,  formState: { errors },  reset } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema),
 
     defaultValues: {
@@ -43,134 +40,140 @@ export default function Register() {
       'password': ''
     },
 
-    reValidateMode:'onSubmit'
+    reValidateMode: 'onSubmit'
   });
 
   const submit = (data) => {
-    // reset();
-    const firebasePromise =  createUserWithEmailAndPassword(authentication, data.email, data.password)
-    const createUserPromise = createUser(data.username, data.firstname, data.lastname, data.email)
+    reset();
+    const firebasePromise = createUserWithEmailAndPassword(authentication, data.email, data.password);
+    const createUserPromise = createUser(data.username, data.firstname, data.lastname, data.email);
 
-    Promise.all([firebasePromise,createUserPromise])
+    Promise.all([firebasePromise, createUserPromise])
 
-    .then((resolvedArr)=>{
-      const ourId = resolvedArr[1].data.ID
-      updateProfile(resolvedArr[0].user,{ displayName : ourId})
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+      .then((resolvedArr) => {
+        const ourId = resolvedArr[1].data.ID;
+        updateProfile(resolvedArr[0].user, { displayName: ourId });
+        return ourId
+      })
+      .then((ourId)=>{
+        getUserById(ourId)
+        .then((res)=> {
+          setUserLogin(res.data,"here")
+        })
+      })
+      .catch((err) => {
+        alert("An error occured");
+      });
   };
 
-
-  if (!userLogin) {
+  if (userLogin) {
     return (
-      <SafeAreaView style={styles.safeareacontainer}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Register</Text>
-
-          <Controller
-            control={control}
-            name="username"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                placeholder="Username"
-                style={styles.input}
-                autoCapitalize='none'
-                autoCorrect={false}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-          />
-          <Text style={styles.error}>{ errors.username ? errors.username.message : null }</Text>
-
-
-          <Controller
-            control={control}
-            name="firstname"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                placeholder="First Name"
-                style={styles.input}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-          />
-          <Text style={styles.error}>{ errors.firstname ? errors.firstname.message : null }</Text>
-
-          <Controller
-            control={control}
-            name="lastname"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                placeholder="Last Name"
-                style={styles.input}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-          />
-          <Text style={styles.error}>{ errors.lastname ? errors.lastname.message : null }</Text>
-
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                placeholder="Email"
-                style={styles.input}
-                textContentType='emailAddress'
-                keyboardType='email-address'
-                autoCapitalize='none'
-                autoCorrect={false}
-                autoCompleteType='email'
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-          />
-          <Text style={styles.error}>{ errors.email ? errors.email.message : null }</Text>
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                placeholder="Password"
-                style={styles.input}
-                secureTextEntry={true}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-          />
-          <Text style={styles.error}>{ errors.password ? errors.password.message : null }</Text>
-
-          <TouchableOpacity
-            onPress={handleSubmit(submit)}>
-            <Text style={styles.button}>Submit</Text>
-          </TouchableOpacity>
-
-        </View>
-      </SafeAreaView>
-    );
-  }
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loggedInContainer}>
+            <Text style={styles.title}>Your account has been created succssfully!</Text>
+            <Text></Text>
+            <Button  
+                    title="Go to my account"  
+                    onPress={() => navigation.navigate("Account page")}  
+                />  
+          </View>
+        </SafeAreaView>
+      );
+    }
 
   return (
     <SafeAreaView style={styles.safeareacontainer}>
-      <View style={styles.loggedInContainer}>
-        <Text style={styles.title}>Account</Text>
-        <Text style={styles.message}>Welcome, {userLogin.Username} ({userLogin.Email}) !</Text>
-        <View style={styles.item}><Text>My saved preference</Text></View>
-        <View style={styles.item}><Text>My account settings</Text></View>
-        <View style={styles.item}><Text>Delete my account</Text></View>
-        <Text></Text>
-        <Button title="Log out" onPress={()=> setUserLogin("")}/>
+      <View style={styles.container}>
+        <Text style={styles.title}>Register</Text>
+
+        <Controller
+          control={control}
+          name="username"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Username"
+              style={styles.input}
+              autoCapitalize='none'
+              autoCorrect={false}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+        />
+        <Text style={styles.error}>{errors.username ? errors.username.message : null}</Text>
+
+
+        <Controller
+          control={control}
+          name="firstname"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="First Name"
+              style={styles.input}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+        />
+        <Text style={styles.error}>{errors.firstname ? errors.firstname.message : null}</Text>
+
+        <Controller
+          control={control}
+          name="lastname"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Last Name"
+              style={styles.input}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+        />
+        <Text style={styles.error}>{errors.lastname ? errors.lastname.message : null}</Text>
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Email"
+              style={styles.input}
+              textContentType='emailAddress'
+              keyboardType='email-address'
+              autoCapitalize='none'
+              autoCorrect={false}
+              autoCompleteType='email'
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+        />
+        <Text style={styles.error}>{errors.email ? errors.email.message : null}</Text>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Password"
+              style={styles.input}
+              secureTextEntry={true}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+            />
+          )}
+        />
+        <Text style={styles.error}>{errors.password ? errors.password.message : null}</Text>
+
+        <TouchableOpacity
+          onPress={handleSubmit(submit)}>
+          <Text style={styles.button}>Submit</Text>
+        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
 }
+  
 
 
 const styles = StyleSheet.create({
@@ -184,12 +187,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-  loggedInContainer: {
-    flex: 1,
-    // backgroundColor: '#282828',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
   title: {
     fontSize: 25,
     marginBottom: 30,
@@ -241,6 +238,6 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-    alignItems:'center'
+    alignItems: 'center'
   },
 });
