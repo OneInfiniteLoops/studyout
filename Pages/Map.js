@@ -6,11 +6,12 @@ import {
   Dimensions,
   Platform,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const locationsResults = [
   {
@@ -69,11 +70,12 @@ const locationsResults = [
   },
 ];
 
-export default function Map({navigation}) {
+export default function Map({ navigation }) {
   const [userLocation, setUserLocation] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
+  const [searchedLocation, setSearchedLocation] = useState(null);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -100,6 +102,34 @@ export default function Map({navigation}) {
       })();
     }, []);
   }
+
+  useEffect(() => {
+    if (searchedLocation !== null) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: Number(searchedLocation.lat),
+          longitude: Number(searchedLocation.lng),
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        },
+        0 * 1000
+      );
+    }
+  }, [searchedLocation]);
+
+  useEffect(() => {
+    if (userLocation !== null) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: Number(userLocation.coords.latitude),
+          longitude: Number(userLocation.coords.longitude),
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        },
+        0 * 1000
+      );
+    }
+  }, [userLocation]);
 
   return (
     <View>
@@ -152,7 +182,26 @@ export default function Map({navigation}) {
           </Marker>
         ))}
       </MapView>
-
+      <View style={styles.searchBar}>
+        <GooglePlacesAutocomplete
+          placeholder="Search location here"
+          fetchDetails={true}
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            setSearchedLocation({
+              lat: details.geometry.location.lat,
+              lng: details.geometry.location.lng,
+            });
+            setLocation(null);
+          }}
+          query={{
+            key: GOOGLE_MAPS_KEY,
+            language: "en",
+            components: "country:gb",
+            rankby: "distance",
+          }}
+        />
+      </View>
       {location && (
         <TouchableOpacity
           style={styles.locationCard}
@@ -255,5 +304,11 @@ const styles = StyleSheet.create({
   },
   locationCardOpeningHours: {
     color: "green",
+  },
+  searchBar: {
+    position: "absolute",
+    width: "90%",
+    alignSelf: "center",
+    top: 50,
   },
 });
