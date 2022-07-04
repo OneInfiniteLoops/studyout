@@ -10,10 +10,20 @@ import ListViewStack from "./Stacks/ListViewStack";
 import MapStack from "./Stacks/MapStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GOOGLE_MAPS_KEY } from "@env";
+import { useState } from "react";
+import { UserLoginContext } from "./Contexts/user"
+
+
 
 const Tab = createBottomTabNavigator();
+
 export default function App() {
+
+  const [userLogin, setUserLogin]  = useState("")
+
+
   return (
+    <UserLoginContext.Provider value={{userLogin, setUserLogin}}>
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
@@ -38,5 +48,6 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+   </UserLoginContext.Provider>
   );
 }
