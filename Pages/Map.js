@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,8 +10,6 @@ import {
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const locationsResults = [
   {
@@ -74,6 +72,7 @@ export default function Map() {
   const [userLocation, setUserLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const mapRef = useRef(null);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -104,26 +103,20 @@ export default function Map() {
   return (
     <View>
       <MapView
+        ref={mapRef}
         style={styles.map}
         apikey={GOOGLE_MAPS_KEY}
-        provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
+        provider={MapView.PROVIDER_GOOGLE}
         moveOnMarkerPress={false}
-        region={
-          userLocation != null
-            ? {
-                latitude: userLocation.coords.latitude,
-                longitude: userLocation.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }
-            : {
-                latitude: 54,
-                longitude: -3,
-                latitudeDelta: 10,
-                longitudeDelta: 10,
-              }
-        }
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        initialCamera={{
+          center: { latitude: 54, longitude: -3 },
+          pitch: 0,
+          zoom: 6,
+          heading: 0,
+          altitude: 1000,
+        }}
       >
         {locationsResults.map((locationResult) => (
           <Marker
@@ -135,6 +128,15 @@ export default function Map() {
             title={locationResult.location_name}
             onPress={() => {
               setSelectedLocation(locationResult);
+              mapRef.current.animateToRegion(
+                {
+                  latitude: Number(locationResult.latitude),
+                  longitude: Number(locationResult.longitude),
+                  latitudeDelta: 0.0522,
+                  longitudeDelta: 0.0421,
+                },
+                0 * 1000
+              );
             }}
           >
             <Callout tooltip>
@@ -211,7 +213,7 @@ const styles = StyleSheet.create({
   },
   locationCard: {
     position: "absolute",
-    marginTop: Platform.OS === "ios" ? 590 : 510,
+    marginTop: Platform.OS === "ios" ? 590 : 550,
     backgroundColor: "#fff",
     width: "90%",
     height: "20%",
