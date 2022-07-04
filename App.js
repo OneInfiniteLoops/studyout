@@ -13,11 +13,15 @@ import { GOOGLE_MAPS_KEY } from "@env";
 import { useState } from "react";
 import { UserLoginContext } from "./Contexts/user"
 
-const [userLogin, setUserLogin]  = useState("")
+
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
+  const [userLogin, setUserLogin]  = useState("")
+
+
   return (
     <UserLoginContext.Provider value={{userLogin, setUserLogin}}>
     <NavigationContainer>
@@ -44,6 +48,6 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
-    </UserLoginContext.Provider>
+   </UserLoginContext.Provider>
   );
 }
