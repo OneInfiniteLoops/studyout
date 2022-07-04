@@ -11,9 +11,10 @@ import MapStack from "./Stacks/MapStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GOOGLE_MAPS_KEY } from "@env";
 import { useState } from "react";
-import { UserLoginContext } from "./Contexts/user";
+import { UserLoginContext } from "./Contexts/user"
 
 const [userLogin, setUserLogin]  = useState("")
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
