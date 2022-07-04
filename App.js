@@ -19,6 +19,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <UserLoginContext.Provider value={{userLogin, setUserLogin}}>
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
@@ -43,5 +44,6 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+    </UserLoginContext.Provider>
   );
 }
