@@ -13,7 +13,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
-
 const locations = [
   {
     location_id: 1,
@@ -72,7 +71,6 @@ const locations = [
 ];
 
 function ListView({ navigation }) {
-  console.log(navigation.navigate)
   const [searchBarClicked, setSearchBarClicked] = React.useState(false);
   return (
     <SafeAreaView>
@@ -96,7 +94,7 @@ function ListView({ navigation }) {
                   : { marginBottom: 10 },
               ]}
               key={location.location_id}
-              onPress={() => { 
+              onPress={() => {
                 navigation.navigate("Space info", { location });
               }}
             >
