@@ -96,7 +96,9 @@ function ListView({ navigation }) {
                   : { marginBottom: 10 },
               ]}
               key={location.location_id}
-              onPress={() => {navigation.navigate("PlaceView", {location: location})}}
+              onPress={() => { 
+                navigation.navigate("Space info", { location });
+              }}
             >
               <Text style={styles.locationName}>{location.location_name}</Text>
               <Text style={styles.locationAddress}>

@@ -6,6 +6,7 @@ import {
   Dimensions,
   Platform,
   Image,
+  TouchableOpacity
 } from "react-native";
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
@@ -68,9 +69,9 @@ const locationsResults = [
   },
 ];
 
-export default function Map() {
+export default function Map({navigation}) {
   const [userLocation, setUserLocation] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
 
@@ -127,7 +128,7 @@ export default function Map() {
             }}
             title={locationResult.location_name}
             onPress={() => {
-              setSelectedLocation(locationResult);
+              setLocation(locationResult);
               mapRef.current.animateToRegion(
                 {
                   latitude: Number(locationResult.latitude),
@@ -152,24 +153,29 @@ export default function Map() {
         ))}
       </MapView>
 
-      {selectedLocation && (
-        <View style={styles.locationCard}>
+      {location && (
+        <TouchableOpacity
+          style={styles.locationCard}
+          onPress={() => {
+            navigation.navigate("Space info", { location });
+          }}
+        >
           <Image
-            source={{ uri: selectedLocation.image_url }}
+            source={{ uri: location.image_url }}
             style={styles.locationCardImage}
           />
           <View style={styles.textContainer}>
             <Text style={styles.locationCardTitle}>
-              {selectedLocation.location_name}
+              {location.location_name}
             </Text>
             <Text style={styles.locationCardText}>
-              {selectedLocation.location_address}
+              {location.location_address}
             </Text>
             <Text style={styles.locationCardOpeningHours}>
-              {selectedLocation.opening_hours}
+              {location.opening_hours}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   );
