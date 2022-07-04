@@ -16,7 +16,7 @@ export default function ListViewStack() {
            <Stack.Screen
              name="Register"
              component={Register}
-             options={{ headerShown: true }}
+             options={{ headerShown: false }}
            ></Stack.Screen>
          </Stack.Navigator>
        );
