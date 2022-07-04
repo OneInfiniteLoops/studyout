@@ -1,3 +1,15 @@
+// import { View, Text } from 'react-native'
+// import React from 'react'
+// import { SafeAreaView } from 'react-native-safe-area-context'
+
+// export default function Account() {
+//   return (
+//     <SafeAreaView>
+//       <Text>Account</Text>
+//     </SafeAreaView>
+//   )
+// }
+
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Button } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,15 +18,14 @@ import { UserLoginContext } from '../Contexts/user';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigation } from '@react-navigation/core';
-import { getUserById } from '../Utils/api';
 
 import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 
-import { authentication } from "../firebase-config"
+import { authentication } from '../firebase.config'
+import { getUserById } from '../Utils/api'
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -27,7 +38,6 @@ const schema = yup.object().shape({
     // ),
 });
 
-const navigation = useNavigation
 
 export default function Account({navigation}) {
 
@@ -56,13 +66,14 @@ export default function Account({navigation}) {
     })
      .catch((err) => {
         alert("There is an error")
+        console.log(err)
       });
   };
 
   function signOut() {
     signOut(authentication)
       .then(() => {
-        alert("Sign-out successful.");
+        alert("Sign-out successful");
         setUserLogin("")
       })
       .catch((error) => {
@@ -120,7 +131,7 @@ export default function Account({navigation}) {
                     title="Register an account"  
                     onPress={() => navigation.navigate("Register")}  
                 />  
-            </View>  
+           </View>  
 
         </View>
       </SafeAreaView>
