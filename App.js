@@ -4,8 +4,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, TabActions } from "@react-navigation/native";
 import ListView from "./Pages/ListView";
 import Map from "./Pages/Map";
-import Bookmarks from "./Pages/Bookmarks";
-import Account from "./Pages/Account";
+import AccountStack from "./Stacks/AccountStack";
+import BookmarksStack from "./Stacks/BookmarkStack";
+import ListViewStack from "./Stacks/ListViewStack";
+import MapStack from "./Stacks/MapStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GOOGLE_MAPS_KEY } from "@env";
 
@@ -16,22 +18,22 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
-          component={ListView}
+          component={ListViewStack}
           options={{ headerShown: false }}
         />
         <Tab.Screen
           name="Map"
-          component={Map}
+          component={MapStack}
           options={{ headerShown: false }}
         />
         <Tab.Screen
           name="Bookmarks"
-          component={Bookmarks}
+          component={BookmarksStack}
           options={{ headerShown: false }}
         />
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={AccountStack}
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
