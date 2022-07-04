@@ -7,7 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from '@react-navigation/core';
-import { getUserById } from './Utils/api';
+import { getUserById } from '../Utils/api';
 
 import {
   signInWithEmailAndPassword,
