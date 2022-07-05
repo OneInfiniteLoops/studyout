@@ -16,6 +16,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { GOOGLE_MAPS_KEY } from "@env";
 import { LogBox } from "react-native";
 import { getLocationDistance } from "../Utils/getLocationDistance";
+import * as Location from "expo-location";
 
 const locations = [
   {
@@ -74,12 +75,50 @@ const locations = [
   },
 ];
 
-
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 function ListView({ navigation }) {
   const [locationArray, setLocationArray] = useState(locations);
   const [searchedLocation, setSearchedLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+
+  if (Platform.OS === "android") {
+    useEffect(() => {
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Permission to access location was denied");
+          return;
+        }
+
+        let receivedLocation = await Location.getCurrentPositionAsync({});
+        setUserLocation(receivedLocation);
+      })();
+    }, []);
+  }
+
+  if (Platform.OS === "ios") {
+    useEffect(() => {
+      (async () => {
+        let receivedLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setUserLocation(receivedLocation);
+      })();
+    }, []);
+  }
+
+  useEffect(() => {
+    if (userLocation !== null) {
+      setLocationArray(
+        getLocationDistance(
+          locationArray,
+          Number(userLocation.coords.latitude),
+          Number(userLocation.coords.longitude)
+        )
+      );
+    }
+  }, [userLocation]);
 
   useEffect(() => {
     if (searchedLocation !== null) {
@@ -90,7 +129,6 @@ function ListView({ navigation }) {
           searchedLocation.lng
         )
       );
-      console.log(locationArray);
     }
   }, [searchedLocation]);
 
@@ -106,7 +144,6 @@ function ListView({ navigation }) {
           fetchDetails={true}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
-            console.log("hi");
             setSearchedLocation({
               lat: details.geometry.location.lat,
               lng: details.geometry.location.lng,
