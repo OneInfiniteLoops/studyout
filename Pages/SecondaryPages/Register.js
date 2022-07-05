@@ -58,7 +58,7 @@ export default function Register({ navigation }) {
       .then((ourId)=>{
         getUserById(ourId)
         .then((res)=> {
-          setUserLogin(res.data,"here")
+          setUserLogin(res.data)
         })
       })
       .catch((err) => {

@@ -17,6 +17,7 @@ import { GOOGLE_MAPS_KEY } from "@env";
 import { LogBox } from "react-native";
 import { getLocationDistance } from "../Utils/getLocationDistance";
 import * as Location from "expo-location";
+import { getLocations } from "../Utils/api";
 
 const locations = [
   {
@@ -78,7 +79,7 @@ const locations = [
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 function ListView({ navigation }) {
-  const [locationArray, setLocationArray] = useState(locations);
+  const [locationArray, setLocationArray] = useState([]);
   const [searchedLocation, setSearchedLocation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -109,16 +110,19 @@ function ListView({ navigation }) {
   }
 
   useEffect(() => {
-    if (userLocation !== null) {
-      setLocationArray(
-        getLocationDistance(
-          locationArray,
-          Number(userLocation.coords.latitude),
-          Number(userLocation.coords.longitude)
-        )
-      );
-    }
-  }, [userLocation]);
+    getLocations().then((resArray) => {
+      setLocationArray(resArray);
+      if (userLocation !== null) {
+        setLocationArray(
+          getLocationDistance(
+            resArray,
+            Number(userLocation.coords.latitude),
+            Number(userLocation.coords.longitude)
+          )
+        );
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (searchedLocation !== null) {
@@ -172,13 +176,13 @@ function ListView({ navigation }) {
                 navigation.navigate("Space info", { location });
               }}
             >
-              <Text style={styles.locationName}>{location.location_name}</Text>
-              <Text style={styles.locationAddress}>
-                {location.location_address}
-              </Text>
+              <Text style={styles.locationName}>{location.LocationName}</Text>
+              <Text style={styles.locationAddress}>{location.Address}</Text>
+              <Text style={styles.locationPostcode}>{location.Postcode}</Text>
+              <Text style={styles.Condition}>{location.Condition}</Text>
               <Text style={styles.opening_hours}>{location.opening_hours}</Text>
               <Image
-                source={{ uri: location.image_url }}
+                source={{ uri: location.ImgUrl }}
                 style={styles.locationImage}
               />
             </TouchableOpacity>
