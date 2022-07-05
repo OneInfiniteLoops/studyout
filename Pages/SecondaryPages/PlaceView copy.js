@@ -6,18 +6,18 @@ export default function PlaceView(location) {
     <View>
       <Image
         style={styles.locationImage}
-        source={{ uri: location.route.params["location"]["ImgUrl"] }}
+        source={{ uri: location.route.params["location"]["image_url"] }}
       />
       <Text style={styles.location_name}>
-        {location.route.params["location"]["LocationName"]}
+        {location.route.params["location"]["location_name"]}
       </Text>
       <Text style={styles.location_address}>
-        Address: {location.route.params["location"]["Address"]}
+        Address: {location.route.params["location"]["location_address"]}
       </Text>
-      {/* <Text style={styles.opening_hours}>
+      <Text style={styles.opening_hours}>
         Opening Hours: {location.route.params["location"]["opening_hours"]}
-      </Text> */}
-      {/* <Text style={styles.features}>
+      </Text>
+      <Text style={styles.features}>
         Features:{" "}
         {location.route.params["location"]["features"]["wifi"]
           ? "🌐 Wi-Fi"
@@ -28,14 +28,14 @@ export default function PlaceView(location) {
         {location.route.params["location"]["features"]["parking"]
           ? "🅿️ Parking"
           : ""}
-      </Text> */}
+      </Text>
       <Text style={styles.conditions}>
         Suggested Conditions Of Use:{" "}
-        {location.route.params["location"]["Condition"]}
+        {location.route.params["location"]["conditions"]}
       </Text>
-      {/* <Text style={styles.created_by}>
+      <Text style={styles.created_by}>
         Posted by: {location.route.params["location"]["created_by"]}
-      </Text> */}
+      </Text>
     </View>
   );
 }
