@@ -27,6 +27,11 @@ export const getLocations = () => {
 export const getBookmarksById = (userId) => {
   return api.get(`/bookmarks/${userId}`);
 };
+
 export const getLocationById = (location_id) => {
   return api.get(`/locations/${location_id}`);
+};
+
+export const getReviewsByLocationId = (location_id) => {
+  return api.get(`/reviews/${location_id}`);
 };
