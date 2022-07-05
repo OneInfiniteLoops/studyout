@@ -1,7 +1,16 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PlaceView(location) {
+    const navigation = useNavigation();
   return (
     <View>
       <Image
@@ -36,6 +45,18 @@ export default function PlaceView(location) {
       <Text style={styles.created_by}>
         Posted by: {location.route.params["location"]["created_by"]}
       </Text>
+      <View>
+        <Text>Rating: 5⭐️</Text>
+        <ScrollView>
+          <TouchableOpacity onPress={() => {
+            console.log(navigation)
+            navigation.navigate("ReviewView");
+            console.log('hi')
+          }}>
+            <Text>This is a dummy review</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
     </View>
   );
 }
