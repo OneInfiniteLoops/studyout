@@ -4,8 +4,8 @@ export function getLocationDistance(arrayOfLocations, lat, lon) {
   return copyOfArrayOfLocations
     .map((location) => {
       location["distance"] = geolib.getDistance(
-        { latitude: location.latitude, longitude: location.longitude },
-        { latitude: lat, longitude: lon }
+        { Latitude: location.Latitude, Longitude: location.Longitude },
+        { Latitude: lat, Longitude: lon }
       );
       return location;
     })
