@@ -50,7 +50,7 @@ export default function PlaceView(location) {
         <ScrollView>
           <TouchableOpacity onPress={() => {
             console.log(navigation)
-            navigation.navigate("ReviewView");
+            navigation.navigate("Reviews");
             console.log('hi')
           }}>
             <Text>This is a dummy review</Text>

@@ -20,7 +20,7 @@ export default function ListViewStack() {
         options={{ headerShown: true }}
       ></Stack.Screen>
       <Stack.Screen
-        name="ReviewView"
+        name="Reviews"
         component={ReviewView}
         options={{ headerShown: true }}
       ></Stack.Screen>
