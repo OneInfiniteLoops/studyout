@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: "http://127.0.0.1:3000/api",
 });
 
-
 export const createUser = (username, firstName, lastName, email) => {
   const userObj = {
     Username: username,
@@ -25,18 +24,9 @@ export const getLocations = () => {
   });
 };
 
-  export const getUserById = (userId) => {
-
-    return api.get(`/users/${userId}`)
-  
-  }
-
-  export const getBookmarksById = (userId) => {
-
-    return api.get(`/bookmarks/${userId}`)
-  }
-  export const getLocationById = (location_id) => {
-
-    return api.get(`/locations/${location_id}`)
-  
-  }
+export const getBookmarksById = (userId) => {
+  return api.get(`/bookmarks/${userId}`);
+};
+export const getLocationById = (location_id) => {
+  return api.get(`/locations/${location_id}`);
+};
