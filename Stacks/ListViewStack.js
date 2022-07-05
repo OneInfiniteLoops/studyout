@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import ListView from "../Pages/ListView";
 import PlaceView from "../Pages/SecondaryPages/PlaceView";
+import ReviewView from "../Pages/SecondaryPages/ReviewView";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export default function ListViewStack() {
@@ -16,6 +17,11 @@ export default function ListViewStack() {
       <Stack.Screen
         name="Space info"
         component={PlaceView}
+        options={{ headerShown: true }}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="Reviews"
+        component={ReviewView}
         options={{ headerShown: true }}
       ></Stack.Screen>
     </Stack.Navigator>
