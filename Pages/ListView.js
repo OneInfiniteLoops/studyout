@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_MAPS_KEY } from "@env";
+import { LogBox } from "react-native";
+import { getLocationDistance } from "../Utils/getLocationDistance";
 
 const locations = [
   {
@@ -70,27 +74,60 @@ const locations = [
   },
 ];
 
+
+LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+
 function ListView({ navigation }) {
-  const [searchBarClicked, setSearchBarClicked] = React.useState(false);
+  const [locationArray, setLocationArray] = useState(locations);
+  const [searchedLocation, setSearchedLocation] = useState(null);
+
+  useEffect(() => {
+    if (searchedLocation !== null) {
+      setLocationArray(
+        getLocationDistance(
+          locationArray,
+          searchedLocation.lat,
+          searchedLocation.lng
+        )
+      );
+      console.log(locationArray);
+    }
+  }, [searchedLocation]);
+
   return (
     <SafeAreaView>
-      <View>
-        <TextInput
-          placeholder="Search for a location..."
-          style={searchBarClicked ? styles.inputClicked : styles.input}
-          onFocus={() => {
-            setSearchBarClicked(true);
+      <ScrollView
+        style={styles.searchBar}
+        keyboardShouldPersistTaps="always"
+        listViewDisplayed={false}
+      >
+        <GooglePlacesAutocomplete
+          placeholder="Search location here"
+          fetchDetails={true}
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            console.log("hi");
+            setSearchedLocation({
+              lat: details.geometry.location.lat,
+              lng: details.geometry.location.lng,
+            });
+          }}
+          query={{
+            key: GOOGLE_MAPS_KEY,
+            language: "en",
+            components: "country:gb",
+            rankby: "distance",
           }}
         />
-      </View>
+      </ScrollView>
       <ScrollView>
-        {locations.map((location, index) => {
+        {locationArray.map((location, index) => {
           return (
             <TouchableOpacity
               style={[
                 styles.locationCard,
-                index === locations.length - 1
-                  ? { marginBottom: useBottomTabBarHeight() + 20 }
+                index === locationArray.length - 1
+                  ? { marginBottom: useBottomTabBarHeight() + 25 }
                   : { marginBottom: 10 },
               ]}
               key={location.location_id}
@@ -144,26 +181,23 @@ const styles = StyleSheet.create({
     color: "green",
     paddingBottom: 10,
   },
-
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+  searchBar: {
+    marginTop: 20,
     borderRadius: 10,
     width: "80%",
     alignSelf: "center",
     fontSize: 20,
-  },
-  inputClicked: {
-    height: 40,
-    margin: 12,
-    borderWidth: 2,
-    padding: 10,
-    width: "80%",
-    borderRadius: 10,
-    alignSelf: "center",
-    fontSize: 20,
+    textInputContainer: {
+      backgroundColor: "grey",
+    },
+    textInput: {
+      height: 38,
+      color: "#5d5d5d",
+      fontSize: 16,
+    },
+    predefinedPlacesDescription: {
+      color: "#1faadb",
+    },
   },
 });
 
