@@ -60,7 +60,7 @@ getReviewsByLocationId(locationId).then((res)=>{
         <View>
        {reviews.map((review , index)=>{
           return (
-        index < 2 && ( 
+        index < 3 && ( 
         <TouchableOpacity onPress={() => {
             navigation.navigate("Reviews");
           }}>
