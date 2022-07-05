@@ -30,3 +30,12 @@ export const getBookmarksById = (userId) => {
 export const getLocationById = (location_id) => {
   return api.get(`/locations/${location_id}`);
 };
+
+export const addLocation = (locationObj, featuresObj) => {
+  const requestObj = {
+    Location: locationObj,
+    Location: featuresObj,
+  };
+
+  return api.post(`/locations`, requestObj);
+};
