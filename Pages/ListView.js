@@ -74,7 +74,6 @@ const locations = [
   },
 ];
 
-
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 function ListView({ navigation }) {
@@ -90,7 +89,6 @@ function ListView({ navigation }) {
           searchedLocation.lng
         )
       );
-      console.log(locationArray);
     }
   }, [searchedLocation]);
 
@@ -106,7 +104,6 @@ function ListView({ navigation }) {
           fetchDetails={true}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
-            console.log("hi");
             setSearchedLocation({
               lat: details.geometry.location.lat,
               lng: details.geometry.location.lng,
