@@ -12,6 +12,7 @@ import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { getLocations } from "../Utils/api";
 
 const locationsResults = [
   {
@@ -76,6 +77,7 @@ export default function Map({ navigation }) {
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
   const [searchedLocation, setSearchedLocation] = useState(null);
+  const [locationsOnMap, setLocationsOnMap] = useState([]);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -131,6 +133,12 @@ export default function Map({ navigation }) {
     }
   }, [userLocation]);
 
+  useEffect(() => {
+    getLocations().then((locationsArray) => {
+      setLocationsOnMap(locationsArray);
+    });
+  }, []);
+
   return (
     <View>
       <MapView
@@ -149,20 +157,20 @@ export default function Map({ navigation }) {
           altitude: 1000,
         }}
       >
-        {locationsResults.map((locationResult) => (
+        {locationsOnMap.map((eachLocationOnMap) => (
           <Marker
-            key={locationResult.location_id}
+            key={eachLocationOnMap.LocationID}
             coordinate={{
-              latitude: Number(locationResult.latitude),
-              longitude: Number(locationResult.longitude),
+              latitude: Number(eachLocationOnMap.Latitude),
+              longitude: Number(eachLocationOnMap.Longitude),
             }}
-            title={locationResult.location_name}
+            title={eachLocationOnMap.LocationName}
             onPress={() => {
-              setLocation(locationResult);
+              setLocation(eachLocationOnMap);
               mapRef.current.animateToRegion(
                 {
-                  latitude: Number(locationResult.latitude),
-                  longitude: Number(locationResult.longitude),
+                  latitude: Number(eachLocationOnMap.Latitude),
+                  longitude: Number(eachLocationOnMap.Longitude),
                   latitudeDelta: 0.0522,
                   longitudeDelta: 0.0421,
                 },
@@ -170,10 +178,10 @@ export default function Map({ navigation }) {
               );
             }}
           >
-            <Callout tooltip>
+            <Callout tooltip key={eachLocationOnMap.LocationID}>
               <View style={styles.locationCallout}>
                 <Text style={styles.locationCalloutText}>
-                  {locationResult.location_name}
+                  {eachLocationOnMap.LocationName}
                 </Text>
               </View>
               <View style={styles.arrowBorder} />
@@ -210,18 +218,18 @@ export default function Map({ navigation }) {
           }}
         >
           <Image
-            source={{ uri: location.image_url }}
+            key={location.LocationID}
+            source={{ uri: location.ImgUrl }}
             style={styles.locationCardImage}
           />
           <View style={styles.textContainer}>
             <Text style={styles.locationCardTitle}>
-              {location.location_name}
+              {location.LocationName}
             </Text>
+            <Text style={styles.locationCardText}>{location.Address}</Text>
+            <Text style={styles.locationCardText}>{location.Postcode}</Text>
             <Text style={styles.locationCardText}>
-              {location.location_address}
-            </Text>
-            <Text style={styles.locationCardOpeningHours}>
-              {location.opening_hours}
+              Suggestions: {location.Condition}
             </Text>
           </View>
         </TouchableOpacity>
