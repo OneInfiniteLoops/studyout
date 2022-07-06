@@ -88,7 +88,7 @@ console.log(locationInfo)
                   : { marginBottom: 10 },
               ]}
               onPress={() => {
-                navigation.navigate("Space info", { location });
+                navigation.navigate("More information", { location });
               }}
             >
               

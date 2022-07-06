@@ -215,7 +215,7 @@ export default function Map({ navigation }) {
         <TouchableOpacity
           style={styles.locationCard}
           onPress={() => {
-            navigation.navigate("Space info", { location });
+            navigation.navigate("More information", { location });
           }}
         >
           <Image
