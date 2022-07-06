@@ -222,11 +222,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff385c",
     padding: 12,
     borderRadius: 15,
+    marginTop: 30,
   },
   buttonText: {
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
     color: "white",
     fontWeight: "bold",
     fontSize: 18,
+    textAlign: "center",
   },
   message: {
     fontSize: 24,
