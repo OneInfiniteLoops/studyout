@@ -8,7 +8,7 @@ export default function SuggestionPage({ navigation, route }) {
   const { featuresObj, locationObj, setLocationObj } = route.params;
 
   const handleSubmit = () => {
-    if (suggestion.length < 20) {
+    if (suggestion.length < 10) {
       setIsValid(false);
     } else {
       navigation.navigate("Location Preview", {
@@ -20,7 +20,7 @@ export default function SuggestionPage({ navigation, route }) {
     }
   };
 
-  React.useState(() => {
+  React.useEffect(() => {
     setLocationObj((currLocationObj) => {
       currLocationObj.Condition = suggestion;
 
