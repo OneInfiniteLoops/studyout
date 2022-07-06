@@ -24,9 +24,20 @@ export const getLocations = () => {
   });
 };
 
+
 export const getBookmarksById = (userId) => {
   return api.get(`/bookmarks/${userId}`);
 };
 export const getLocationById = (location_id) => {
+
   return api.get(`/locations/${location_id}`);
+};
+
+export const postBookmark = (locationId, userId) => {
+  const requestObj = {
+    LocationId : locationId,
+    UserId : userId
+  }
+  console.log(requestObj)
+  return api.post(`/bookmarks`, requestObj );
 };
