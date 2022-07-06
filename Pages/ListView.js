@@ -25,6 +25,7 @@ function ListView({ navigation }) {
   const [locationArray, setLocationArray] = useState([]);
   const [searchedLocation, setSearchedLocation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [locationPostStatus, setLocationPostStatus] = useState(false);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -53,19 +54,23 @@ function ListView({ navigation }) {
   }
 
   useEffect(() => {
-    getLocations().then((resArray) => {
-      setLocationArray(resArray);
-      if (userLocation !== null) {
-        setLocationArray(
-          getLocationDistance(
-            resArray,
-            Number(userLocation.coords.latitude),
-            Number(userLocation.coords.longitude)
-          )
-        );
-      }
-    });
-  }, []);
+    getLocations()
+      .then((resArray) => {
+        setLocationArray(resArray);
+        if (userLocation !== null) {
+          setLocationArray(
+            getLocationDistance(
+              resArray,
+              Number(userLocation.coords.latitude),
+              Number(userLocation.coords.longitude)
+            )
+          );
+        }
+      })
+      .then(() => {
+        setLocationPostStatus(false);
+      });
+  }, [locationPostStatus]);
 
   useEffect(() => {
     if (searchedLocation !== null) {
@@ -89,7 +94,7 @@ function ListView({ navigation }) {
         <Button
           title="Add Location"
           onPress={() => {
-            navigation.navigate("Add Location");
+            navigation.navigate("Add Location", { setLocationPostStatus });
           }}
         ></Button>
         <GooglePlacesAutocomplete
