@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -42,8 +42,8 @@ export default function PlaceView(location) {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      keyboardVerticalOffset={100}
-      behavior={"position"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      behavior={Platform.OS === "ios" ? "position" : null}
     >
       <ScrollView style={styles.scrollView}>
         <Image
