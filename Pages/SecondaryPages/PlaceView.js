@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  KeyboardAvoidingView
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +31,6 @@ export default function PlaceView(location) {
     getReviewsByLocationId(locationId)
       .then((res) => {
         setReviews(res.data);
-        console.log(res.data, "Per Caolon's request");
         setIsReviewLoading(false);
         setReviewSubmitted(false);
       })
@@ -40,83 +40,92 @@ export default function PlaceView(location) {
   }, [reviewSubmitted]);
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <Image
-        style={styles.locationImage}
-        source={{ uri: location.route.params["location"]["ImgUrl"] }}
-      />
-      <Text style={styles.location_name}>
-        {location.route.params["location"]["LocationName"]}
-      </Text>
-      <View style={styles.locationInfo}>
-        <Text style={styles.moreInfo}>More information</Text>
-        <Text style={styles.features}>Features: 🌐🚻🥤🅿️🍽♿️</Text>
-        <Text style={styles.location_address}>
-          Address: {location.route.params["location"]["Address"]}
-        </Text>
-        <Text style={styles.conditions}>
-          Usage suggestions: {location.route.params["location"]["Condition"]}
-        </Text>
-      </View>
-      {reviewLoadingError && (
-        <Text style={styles.noReviewsText}>No rating is available</Text>
-      )}
-      {!isReviewLoading && (
-        <View style={styles.reviewsCard}>
-          <Text style={styles.rating}>Average rating: 5⭐️</Text>
-          <View>
-            {reviews.map((review, index) => {
-              return (
-                index < 3 && (
-                  <View style={styles.singleReview}>
-                    <Text style={styles.reviewBody}>
-                      {" "}
-                      {review.StarRating}⭐️ {review.ReviewBody}
-                    </Text>
-                    <Text style={styles.vistedOn}>
-                      Visted on: {review.VisitDate}
-                    </Text>
-                  </View>
-                )
-              );
-            })}
-            <Button
-              color="#ff385c"
-              title="See all reviews"
-              onPress={() => {
-                navigation.navigate("Reviews", {
-                  name: locationName,
-                  reviews: reviews,
-                });
-              }}
-            />
-          </View>
-        </View>
-      )}
-      <View style={styles.submitReviewCard}>
-        <Text style={styles.submitReviewCardText}>Submit Review</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={"Write a review"}
-          value={reviewBody}
-          onChangeText={(reviewBody) => setReviewBody(reviewBody)}
-          selectionColor={"#ff385c"}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={100}
+      behavior={"position"}
+    >
+      <ScrollView style={styles.scrollView}>
+        <Image
+          style={styles.locationImage}
+          source={{ uri: location.route.params["location"]["ImgUrl"] }}
         />
-        <Button
-          color="#ff385c"
-          title="Submit Review"
-          onPress={() => {
-            if (reviewBody.length > 0) {
-              addReview(location.route.params.location.LocationID, reviewBody);
-              setReviewSubmitted(true);
-              setReviewBody("");
-            } else {
-              alert("Review cannot be empty");
-            }
-          }}
-        ></Button>
-      </View>
-    </ScrollView>
+        <Text style={styles.location_name}>
+          {location.route.params["location"]["LocationName"]}
+        </Text>
+        <View style={styles.locationInfo}>
+          <Text style={styles.moreInfo}>More information</Text>
+          <Text style={styles.features}>Features: 🌐🚻🥤🅿️🍽♿️</Text>
+          <Text style={styles.location_address}>
+            Address: {location.route.params["location"]["Address"]}
+          </Text>
+          <Text style={styles.conditions}>
+            Usage suggestions: {location.route.params["location"]["Condition"]}
+          </Text>
+        </View>
+        {reviewLoadingError && (
+          <Text style={styles.noReviewsText}>No rating is available</Text>
+        )}
+        {!isReviewLoading && (
+          <View style={styles.reviewsCard}>
+            <Text style={styles.rating}>Average rating: 5⭐️</Text>
+            <View>
+              {reviews.map((review, index) => {
+                return (
+                  index < 3 && (
+                    <View style={styles.singleReview}>
+                      <Text style={styles.reviewBody}>
+                        {" "}
+                        {review.StarRating}⭐️ {review.ReviewBody}
+                      </Text>
+                      <Text style={styles.vistedOn}>
+                        Visted on: {review.VisitDate}
+                      </Text>
+                    </View>
+                  )
+                );
+              })}
+              <Button
+                color="#ff385c"
+                title="See all reviews"
+                onPress={() => {
+                  navigation.navigate("Reviews", {
+                    name: locationName,
+                    reviews: reviews,
+                  });
+                }}
+              />
+            </View>
+          </View>
+        )}
+        <View style={styles.submitReviewCard}>
+          <Text style={styles.submitReviewCardText}>Submit Review</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={"Write a review"}
+            value={reviewBody}
+            onChangeText={(reviewBody) => setReviewBody(reviewBody)}
+            selectionColor={"#ff385c"}
+          />
+          <Button
+            color="#ff385c"
+            title="Submit Review"
+            onPress={() => {
+              if (reviewBody.length > 0) {
+                addReview(
+                  location.route.params.location.LocationID,
+                  reviewBody
+                );
+                setReviewSubmitted(true);
+                setReviewBody("");
+              } else {
+                alert("Review cannot be empty");
+              }
+            }}
+          ></Button>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -231,7 +240,6 @@ const styles = StyleSheet.create({
   features: {
     margin: 5,
     fontSize: 20,
-
   },
   created_by: {
     padding: 10,
