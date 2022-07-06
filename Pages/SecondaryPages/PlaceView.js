@@ -5,10 +5,12 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Button
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getReviewsByLocationId } from "../../Utils/api";
+import { getTimeDate } from "../../Utils/dayjs";
 
 export default function PlaceView(location) {
 
@@ -17,6 +19,7 @@ export default function PlaceView(location) {
  const [isReviewLoading, setIsReviewLoading] = useState(true)
  const [ reviewLoadingError , setReviewLoadingError] = useState(false)
  const [ author, SetAuthor ] = useState(null)
+ const locationName = location.route.params.location.LocationName
 
 
  const navigation = useNavigation();
@@ -31,8 +34,6 @@ getReviewsByLocationId(locationId).then((res)=>{
   setReviewLoadingError(true)
 })
 },[])
-
-
 
 
   return (
@@ -61,16 +62,21 @@ getReviewsByLocationId(locationId).then((res)=>{
        {reviews.map((review , index)=>{
           return (
         index < 3 && ( 
-        <TouchableOpacity onPress={() => {
-            navigation.navigate("Reviews");
-          }}>
+        <View>
           <Text> { review.ReviewBody}</Text>
           <Text> { review.StarRating}</Text>
-          <Text> { review.VisitDate}</Text>
-          <Text> { review.CreatedAt}</Text>
-          </TouchableOpacity>)
+          <Text>{ review.VisitDate}</Text>
+          <Text> { getTimeDate(review.CreatedAt)}</Text>
+
+        </View>
+
+
+          
+          )
           )
         })}
+        <Text></Text>
+        <Button title="See all reviews" onPress={()=>{navigation.navigate("Reviews", { "name": locationName , "reviews": reviews})}}/>
         </View>
       </View>}
     </ScrollView>
