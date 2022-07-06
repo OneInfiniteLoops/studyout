@@ -6,13 +6,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AddBookmarkButton from "../../Utils/AddBookmarkButton";
+import { UserLoginContext } from "../../Contexts/user";
 
 export default function PlaceView(location) {
     const navigation = useNavigation();
+    const locationId = location.route.params.location.LocationID
+    const { userLogin } = useContext(UserLoginContext)
+    const userId = userLogin.ID
+
   return (
     <View>
+
       <Image
         style={styles.locationImage}
         source={{ uri: location.route.params["location"]["ImgUrl"] }}
@@ -55,6 +62,8 @@ export default function PlaceView(location) {
           }}>
             <Text>This is a dummy review</Text>
           </TouchableOpacity>
+
+          <AddBookmarkButton  locationId={locationId} userId={userId}></AddBookmarkButton>
         </ScrollView>
       </View>
     </View>
