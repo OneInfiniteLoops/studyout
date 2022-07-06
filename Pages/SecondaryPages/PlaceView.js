@@ -24,7 +24,9 @@ export default function PlaceView(location) {
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const locationName = location.route.params.location.LocationName;
 
+
   const navigation = useNavigation();
+
 
   useEffect(() => {
     getReviewsByLocationId(locationId)
@@ -55,10 +57,7 @@ export default function PlaceView(location) {
         Suggested Conditions Of Use:{" "}
         {location.route.params["location"]["Condition"]}
       </Text>
-      <Text style={styles.created_by}>
-        Posted by: {location.route.params["location"]["CreatedBy"]} (Need to be
-        the username)
-      </Text>
+
       {reviewLoadingError && <Text>No rating is available</Text>}
       {!isReviewLoading && (
         <View>

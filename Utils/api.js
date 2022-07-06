@@ -41,6 +41,7 @@ export const addLocation = (locationObj, featuresObj) => {
     Location: locationObj,
     LocationFeature: featuresObj,
   };
+
   return api.post(`/locations`, requestObj);
 };
 
@@ -63,7 +64,5 @@ export const addReview = (locationID, reviewBody) => {
     StarRating: 5,
     ReviewBody: reviewBody,
   };
-  console.log(requestObj);
-
   return api.post(`/reviews`, requestObj);
 };

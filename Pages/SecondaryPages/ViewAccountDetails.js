@@ -19,7 +19,6 @@ import { AuthErrorCodes, connectAuthEmulator } from "firebase/auth";
 
 function ViewAccountDetails () {
   const { userLogin } = React.useContext(UserLoginContext);
-  console.log(userLogin)
   return (
     <SafeAreaView style={styles.safeareacontainer}>
       <ScrollView>
