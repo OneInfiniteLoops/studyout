@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^6.2.1",
     "amonad": "^2.0.1",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.3",
     "distance-from": "^1.1.2",
     "expo": "~45.0.0",
     "expo-location": "~14.2.2",
