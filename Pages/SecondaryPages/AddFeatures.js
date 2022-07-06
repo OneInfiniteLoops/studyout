@@ -10,7 +10,6 @@ export default function AddFeatures({ navigation, route }) {
   const { locationObj, setLocationObj } = route.params;
 
   const handleSubmit = () => {
-    console.log(featuresObj);
     navigation.navigate("Add Suggestion", {
       featuresObj,
       locationObj,

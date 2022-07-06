@@ -40,7 +40,6 @@ export const addLocation = (locationObj, featuresObj) => {
     Location: locationObj,
     LocationFeature: featuresObj,
   };
-  console.log(requestObj);
 
   return api.post(`/locations`, requestObj);
 };

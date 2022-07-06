@@ -66,7 +66,6 @@ export default function Account({navigation}) {
     })
      .catch((err) => {
         alert("There is an error")
-        console.log(err)
       });
   };
 

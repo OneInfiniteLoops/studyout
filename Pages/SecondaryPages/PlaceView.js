@@ -27,7 +27,6 @@ export default function PlaceView(location) {
 useEffect(()=>{
 getReviewsByLocationId(locationId).then((res)=>{
   setReviews(res.data)
-  console.log(res.data,"Per Caolon's request")
   setIsReviewLoading(false)
 })
 .catch((err)=>{
@@ -51,9 +50,6 @@ getReviewsByLocationId(locationId).then((res)=>{
       <Text style={styles.conditions}>
         Suggested Conditions Of Use:{" "}
         {location.route.params["location"]["Condition"]}
-      </Text>
-      <Text style={styles.created_by}>
-        Posted by: {location.route.params["location"]["CreatedBy"]} (Need to be the username)
       </Text>
       { reviewLoadingError && <Text>No rating is available</Text>}
       {!isReviewLoading && <View>
