@@ -127,7 +127,7 @@ function ListView({ navigation }) {
               ]}
               key={location.location_id}
               onPress={() => {
-                navigation.navigate("Space info", { location });
+                navigation.navigate("More information", { location });
               }}
             >
               <Image
