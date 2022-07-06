@@ -44,11 +44,26 @@ export const addLocation = (locationObj, featuresObj) => {
   return api.post(`/locations`, requestObj);
 };
 
+
 export const deleteBookmark = (location_id,user_id) => {
   const requestObj = {
     LocationId : location_id,
     UserId : user_id
   }
-  console.log(requestObj, "jerere")
+
   return api.delete(`/bookmarks`, {data: requestObj} );
+  
+  }
+
+export const addReview = (locationID, reviewBody) => {
+  const requestObj = {
+    UserRefer: 1,
+    LocationRefer: locationID,
+    VisitDate: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
+    StarRating: 5,
+    ReviewBody: reviewBody,
+  };
+  console.log(requestObj);
+
+  return api.post(`/reviews`, requestObj);
 };

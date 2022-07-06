@@ -7,7 +7,7 @@ import { features } from "../../Utils/features";
 export default function AddFeatures({ navigation, route }) {
   const [featuresObj, setFeaturesObj] = React.useState({ ...features });
   const featuresArray = Object.keys(features);
-  const { locationObj, setLocationObj } = route.params;
+  const { locationObj, setLocationObj, setLocationPostStatus } = route.params;
 
   const handleSubmit = () => {
     console.log(featuresObj);
@@ -15,6 +15,7 @@ export default function AddFeatures({ navigation, route }) {
       featuresObj,
       locationObj,
       setLocationObj,
+      setLocationPostStatus,
     });
   };
 
