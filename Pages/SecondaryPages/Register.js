@@ -6,6 +6,9 @@ import {
   StyleSheet,
   ScrollView,
   Button,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -114,118 +117,121 @@ export default function Register({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeareacontainer}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Account Registration</Text>
-
-        <Controller
-          control={control}
-          name="username"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="Username"
-              style={styles.input}
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={(value) => onChange(value)}
-              value={value}
+      <KeyboardAvoidingView style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Text style={styles.title}>Account Registration</Text>
+            <Controller
+              control={control}
+              name="username"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder="Username"
+                  style={styles.input}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Text style={styles.error}>
-          {errors.username ? errors.username.message : null}
-        </Text>
+            <Text style={styles.error}>
+              {errors.username ? errors.username.message : null}
+            </Text>
 
-        <Controller
-          control={control}
-          name="firstname"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="First Name"
-              style={styles.input}
-              onChangeText={(value) => onChange(value)}
-              value={value}
+            <Controller
+              control={control}
+              name="firstname"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder="First Name"
+                  style={styles.input}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Text style={styles.error}>
-          {errors.firstname ? errors.firstname.message : null}
-        </Text>
+            <Text style={styles.error}>
+              {errors.firstname ? errors.firstname.message : null}
+            </Text>
 
-        <Controller
-          control={control}
-          name="lastname"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="Last Name"
-              style={styles.input}
-              onChangeText={(value) => onChange(value)}
-              value={value}
+            <Controller
+              control={control}
+              name="lastname"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder="Last Name"
+                  style={styles.input}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Text style={styles.error}>
-          {errors.lastname ? errors.lastname.message : null}
-        </Text>
+            <Text style={styles.error}>
+              {errors.lastname ? errors.lastname.message : null}
+            </Text>
 
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="Email"
-              style={styles.input}
-              textContentType="emailAddress"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoCompleteType="email"
-              onChangeText={(value) => onChange(value)}
-              value={value}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder="Email"
+                  style={styles.input}
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  autoCompleteType="email"
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Text style={styles.error}>
-          {errors.email ? errors.email.message : null}
-        </Text>
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="Password"
-              style={styles.input}
-              secureTextEntry={true}
-              onChangeText={(value) => onChange(value)}
-              value={value}
+            <Text style={styles.error}>
+              {errors.email ? errors.email.message : null}
+            </Text>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder="Password"
+                  style={styles.input}
+                  secureTextEntry={true}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Text style={styles.error}>
-          {errors.password ? errors.password.message : null}
-        </Text>
+            <Text style={styles.error}>
+              {errors.password ? errors.password.message : null}
+            </Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(submit)}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit(submit)}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeareacontainer: {
-    flex: 1,
-  },
   container: {
-    flex: 1,
-    // backgroundColor: '#282828',
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
 
   title: {
     fontSize: 25,
-    marginBottom: 50,
+    marginTop: 30,
+    marginBottom: 30,
     color: "#222222",
   },
   error: {
