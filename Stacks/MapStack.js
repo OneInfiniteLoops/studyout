@@ -16,7 +16,10 @@ export default function ListViewStack() {
       <Stack.Screen
         name="More information"
         component={PlaceView}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "#ff385c",
+        }}
       ></Stack.Screen>
     </Stack.Navigator>
   );
