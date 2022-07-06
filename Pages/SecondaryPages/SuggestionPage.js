@@ -5,7 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function SuggestionPage({ navigation, route }) {
   const [suggestion, setSuggestion] = React.useState("");
   const [isValid, setIsValid] = React.useState(true);
-  const { featuresObj, locationObj, setLocationObj } = route.params;
+  const { featuresObj, locationObj, setLocationObj, setLocationPostStatus } =
+    route.params;
 
   const handleSubmit = () => {
     if (suggestion.length < 10) {
@@ -15,6 +16,7 @@ export default function SuggestionPage({ navigation, route }) {
         featuresObj,
         locationObj,
         setLocationObj,
+        setLocationPostStatus,
       });
       setIsValid(true);
     }

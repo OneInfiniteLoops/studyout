@@ -7,13 +7,14 @@ import { features } from "../../Utils/features";
 export default function AddFeatures({ navigation, route }) {
   const [featuresObj, setFeaturesObj] = React.useState({ ...features });
   const featuresArray = Object.keys(features);
-  const { locationObj, setLocationObj } = route.params;
+  const { locationObj, setLocationObj, setLocationPostStatus } = route.params;
 
   const handleSubmit = () => {
     navigation.navigate("Add Suggestion", {
       featuresObj,
       locationObj,
       setLocationObj,
+      setLocationPostStatus,
     });
   };
 

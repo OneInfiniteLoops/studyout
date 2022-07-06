@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FormInput from "../../Components/FormInput";
 import { LocationObj } from "../../Utils/locationObj";
 
-export default function AddressForm({ navigation }) {
+export default function AddressForm({ navigation, route }) {
   const [businessName, setBusinessName] = React.useState("");
   const [buildingNumber, setBuildingNumber] = React.useState("");
   const [street, setStreet] = React.useState("");
@@ -17,6 +17,7 @@ export default function AddressForm({ navigation }) {
   const [cityValid, setCityValid] = React.useState(true);
   const [postcodeValid, setPostcodeValid] = React.useState(true);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const { setLocationPostStatus } = route.params;
 
   function updateLocationObj() {
     setLocationObj((currLocationObj) => {
@@ -77,7 +78,11 @@ export default function AddressForm({ navigation }) {
         postcodeValid)
       ) {
         updateLocationObj();
-        navigation.navigate("Add Picture", { locationObj, setLocationObj });
+        navigation.navigate("Add Picture", {
+          locationObj,
+          setLocationObj,
+          setLocationPostStatus,
+        });
       }
       setIsSubmitted(false);
     }
