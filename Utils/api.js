@@ -35,12 +35,20 @@ export const getLocationById = (location_id) => {
 export const getReviewsByLocationId = (location_id) => {
   return api.get(`/reviews/${location_id}`);
 };
+
 export const addLocation = (locationObj, featuresObj) => {
   const requestObj = {
     Location: locationObj,
     LocationFeature: featuresObj,
   };
-  console.log(requestObj);
-
   return api.post(`/locations`, requestObj);
+};
+
+export const deleteBookmark = (location_id,user_id) => {
+  const requestObj = {
+    LocationId : location_id,
+    UserId : user_id
+  }
+  console.log(requestObj, "jerere")
+  return api.delete(`/bookmarks`, {data: requestObj} );
 };
