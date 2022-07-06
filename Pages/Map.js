@@ -190,8 +190,9 @@ export default function Map({ navigation }) {
           </Marker>
         ))}
       </MapView>
-      <View style={styles.searchBar}>
+      <View style={styles.searchBarContainer}>
         <GooglePlacesAutocomplete
+          styles={styles.searchBar}
           placeholder="Search location here"
           fetchDetails={true}
           onPress={(data, details = null) => {
@@ -252,6 +253,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     padding: 8,
     width: 150,
+    borderradius: 15,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   arrow: {
     backgroundColor: "transparent",
@@ -281,7 +287,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "20%",
     alignSelf: "center",
-    borderRadius: 5,
+    borderRadius: 15,
     padding: 10,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 3 },
@@ -298,14 +304,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   locationCardTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#ff385c",
   },
   locationCardImage: {
     height: "100%",
     width: "50%",
-    borderRadius: 5,
+    borderRadius: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
@@ -313,10 +320,36 @@ const styles = StyleSheet.create({
   locationCardOpeningHours: {
     color: "green",
   },
-  searchBar: {
+  searchBarContainer: {
     position: "absolute",
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
     top: 50,
+  },
+  searchBar: {
+    textInputContainer: {
+      marginBottom: 10,
+      borderRadius: 10,
+      width: "90%",
+      alignSelf: "center",
+    },
+    listView: {
+      alignSelf: "center",
+      borderRadius: 15,
+      width: "90%",
+    },
+    textInput: {
+      height: 45,
+      borderRadius: 40,
+      color: "#5d5d5d",
+      fontSize: 16,
+      shadowColor: "black",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
+    },
+    predefinedPlacesDescription: {
+      color: "#1faadb",
+    },
   },
 });
