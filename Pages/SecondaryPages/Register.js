@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     marginBottom: 50,
+    color: "#222222",
   },
   error: {
     fontSize: 16,
