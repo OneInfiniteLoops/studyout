@@ -5,14 +5,39 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Button
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { getReviewsByLocationId } from "../../Utils/api";
+import { getTimeDate } from "../../Utils/dayjs";
 
 export default function PlaceView(location) {
-    const navigation = useNavigation();
+
+ const locationId = location.route.params.location.LocationID
+ const [reviews, setReviews] = useState(null)
+ const [isReviewLoading, setIsReviewLoading] = useState(true)
+ const [ reviewLoadingError , setReviewLoadingError] = useState(false)
+ const [ author, SetAuthor ] = useState(null)
+ const locationName = location.route.params.location.LocationName
+
+
+ const navigation = useNavigation();
+ 
+useEffect(()=>{
+getReviewsByLocationId(locationId).then((res)=>{
+  setReviews(res.data)
+  console.log(res.data,"Per Caolon's request")
+  setIsReviewLoading(false)
+})
+.catch((err)=>{
+  setReviewLoadingError(true)
+})
+},[])
+
+
   return (
-    <View>
+    <ScrollView>
       <Image
         style={styles.locationImage}
         source={{ uri: location.route.params["location"]["ImgUrl"] }}
@@ -23,41 +48,38 @@ export default function PlaceView(location) {
       <Text style={styles.location_address}>
         Address: {location.route.params["location"]["Address"]}
       </Text>
-      {/* <Text style={styles.opening_hours}>
-        Opening Hours: {location.route.params["location"]["opening_hours"]}
-      </Text> */}
-      {/* <Text style={styles.features}>
-        Features:{" "}
-        {location.route.params["location"]["features"]["wifi"]
-          ? "🌐 Wi-Fi"
-          : ""}
-        ,{" "}
-        {location.route.params["location"]["features"]["food"] ? "🥪 Food" : ""}
-        ,{" "}
-        {location.route.params["location"]["features"]["parking"]
-          ? "🅿️ Parking"
-          : ""}
-      </Text> */}
       <Text style={styles.conditions}>
         Suggested Conditions Of Use:{" "}
         {location.route.params["location"]["Condition"]}
       </Text>
       <Text style={styles.created_by}>
-        Posted by: {location.route.params["location"]["created_by"]}
+        Posted by: {location.route.params["location"]["CreatedBy"]} (Need to be the username)
       </Text>
-      <View>
-        <Text>Rating: 5⭐️</Text>
-        <ScrollView>
-          <TouchableOpacity onPress={() => {
-            console.log(navigation)
-            navigation.navigate("Reviews");
-            console.log('hi')
-          }}>
-            <Text>This is a dummy review</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    </View>
+      { reviewLoadingError && <Text>No rating is available</Text>}
+      {!isReviewLoading && <View>
+        <Text>Rating: 5⭐️ </Text>
+        <View>
+       {reviews.map((review , index)=>{
+          return (
+        index < 3 && ( 
+        <View>
+          <Text> { review.ReviewBody}</Text>
+          <Text> { review.StarRating}</Text>
+          <Text>{ review.VisitDate}</Text>
+          <Text> { getTimeDate(review.CreatedAt)}</Text>
+
+        </View>
+
+
+          
+          )
+          )
+        })}
+        <Text></Text>
+        <Button title="See all reviews" onPress={()=>{navigation.navigate("Reviews", { "name": locationName , "reviews": reviews})}}/>
+        </View>
+      </View>}
+    </ScrollView>
   );
 }
 
@@ -110,5 +132,11 @@ const styles = StyleSheet.create({
   },
   created_by: {
     padding: 10,
+  },
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+    
   },
 });
