@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { getTimeDate } from '../../Utils/dayjs'
+
 
 export default function ReviewView(info) {
   const locName = info.route.params.name
   const reviews = info.route.params.reviews
 
   return (
-    <View>
+    <ScrollView>
       <Text>{ locName }</Text>
       <Text></Text>
       <View>{ reviews.map((review)=>{
@@ -22,7 +23,7 @@ export default function ReviewView(info) {
       }) }</View>
 
 
-    </View>
+    </ScrollView>
   )
 }
 
