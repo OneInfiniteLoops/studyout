@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
 import React from "react";
 import { addLocation } from "../../Utils/api";
 
@@ -7,9 +7,8 @@ export default function LocationPreview({ navigation, route }) {
 
   const handleSubmit = () => {
     addLocation(locationObj, featuresObj).then((response) => {
-      if (response.body.Location.LocationID) {
-        navigation.popToTop();
-      }
+      Alert.alert("Location Posted Successfully");
+      navigation.popToTop();
     });
   };
 
