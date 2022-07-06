@@ -143,6 +143,12 @@ function ListView({ navigation }) {
         keyboardShouldPersistTaps="always"
         listViewDisplayed={false}
       >
+        <Button
+          title="Add Location"
+          onPress={() => {
+            navigation.navigate("Add Location");
+          }}
+        ></Button>
         <GooglePlacesAutocomplete
           placeholder="Search location here"
           fetchDetails={true}

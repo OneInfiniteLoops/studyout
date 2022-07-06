@@ -141,10 +141,14 @@ export default function Account({navigation}) {
   return (
     <SafeAreaView style={styles.safeareacontainer}>
       <View style={styles.loggedInContainer}>
-        <Text style={styles.title}>Account</Text>
+      <Text style={styles.title}>Account</Text>
         <Text style={styles.message}>Welcome, {userLogin.Username} ({userLogin.Email}) !</Text>
         <View style={styles.item}><Text>My saved preference</Text></View>
-        <View style={styles.item}><Text>My account settings</Text></View>
+        <View style={styles.item}>
+        <TouchableOpacity onPress={() => navigation.navigate("My Account Details")}>
+          <Text>My account details</Text>
+          </TouchableOpacity>
+          </View>
         <View style={styles.item}><Text>Delete my account</Text></View>
         <Text></Text>
         <Button title="Log out" onPress={()=> setUserLogin("")}/>
