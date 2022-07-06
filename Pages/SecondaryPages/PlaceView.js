@@ -20,13 +20,11 @@ export default function PlaceView(location) {
   const [isReviewLoading, setIsReviewLoading] = useState(true);
   const [reviewLoadingError, setReviewLoadingError] = useState(false);
   const [author, SetAuthor] = useState(null);
-  const [reviewBody, setReviewBody] = useState(null);
+  const [reviewBody, setReviewBody] = useState("");
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const locationName = location.route.params.location.LocationName;
 
-
   const navigation = useNavigation();
-
 
   useEffect(() => {
     getReviewsByLocationId(locationId)
@@ -96,16 +94,18 @@ export default function PlaceView(location) {
           value={reviewBody}
           onChangeText={(reviewBody) => setReviewBody(reviewBody)}
         />
-        
-        <Button title="Submit Review" onPress={() => {
-          if (reviewBody.length > 0) {
-            addReview(location.route.params.location.LocationID, reviewBody);
-            setReviewSubmitted(true);
-          } else {
-            alert("Review cannot be empty");
-          }
-          
-        }}></Button>
+
+        <Button
+          title="Submit Review"
+          onPress={() => {
+            if (reviewBody.length > 0) {
+              addReview(location.route.params.location.LocationID, reviewBody);
+              setReviewSubmitted(true);
+            } else {
+              alert("Review cannot be empty");
+            }
+          }}
+        ></Button>
       </View>
     </ScrollView>
   );
