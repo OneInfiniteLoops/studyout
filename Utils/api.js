@@ -34,8 +34,9 @@ export const getLocationById = (location_id) => {
 export const addLocation = (locationObj, featuresObj) => {
   const requestObj = {
     Location: locationObj,
-    Location: featuresObj,
+    LocationFeature: featuresObj,
   };
+  console.log(requestObj);
 
   return api.post(`/locations`, requestObj);
 };
