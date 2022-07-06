@@ -41,10 +41,19 @@ export const addLocation = (locationObj, featuresObj) => {
     Location: locationObj,
     LocationFeature: featuresObj,
   };
-  console.log(requestObj);
-
   return api.post(`/locations`, requestObj);
 };
+
+
+export const deleteBookmark = (location_id,user_id) => {
+  const requestObj = {
+    LocationId : location_id,
+    UserId : user_id
+  }
+
+  return api.delete(`/bookmarks`, {data: requestObj} );
+  
+  }
 
 export const addReview = (locationID, reviewBody) => {
   const requestObj = {
