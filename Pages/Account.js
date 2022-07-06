@@ -151,7 +151,7 @@ export default function Account({navigation}) {
           </View>
         <View style={styles.item}><Text>Delete my account</Text></View>
         <Text></Text>
-        <Button title="Log out" onPress={() => navigation.navigate("Register")}/>
+        <Button title="Log out" onPress={()=> setUserLogin("")}/>
       </View>
     </SafeAreaView>
   );
