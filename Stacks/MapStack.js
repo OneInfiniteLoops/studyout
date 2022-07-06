@@ -14,7 +14,7 @@ export default function ListViewStack() {
         options={{ headerShown: false }}
       ></Stack.Screen>
       <Stack.Screen
-        name="Space info"
+        name="More information"
         component={PlaceView}
         options={{ headerShown: true }}
       ></Stack.Screen>
