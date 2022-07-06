@@ -10,7 +10,7 @@ export default function ImageForm({ navigation, route }) {
     "https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
   );
   const [isValid, setIsValid] = React.useState(true);
-  const { locationObj, setLocationObj } = route.params;
+  const { locationObj, setLocationObj, setLocationPostStatus } = route.params;
 
   function handleUpload() {
     setSubmittedImage(imageUrl);
@@ -18,7 +18,11 @@ export default function ImageForm({ navigation, route }) {
 
   function handleSubmit() {
     if (isValid) {
-      navigation.navigate("Add Features", { locationObj, setLocationObj });
+      navigation.navigate("Add Features", {
+        locationObj,
+        setLocationObj,
+        setLocationPostStatus,
+      });
     }
   }
 
