@@ -22,7 +22,11 @@ export default function AddFeatures({ navigation, route }) {
     <View>
       {featuresArray.map((feature) => {
         return (
-          <FeatureButton feature={feature} setFeaturesObj={setFeaturesObj} />
+          <FeatureButton
+            key={feature}
+            feature={feature}
+            setFeaturesObj={setFeaturesObj}
+          />
         );
       })}
       <Pressable onPress={handleSubmit}>

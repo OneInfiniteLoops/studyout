@@ -40,27 +40,47 @@ export default function ListViewStack() {
       <Stack.Screen
         name="Add Location"
         component={AddressForm}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#ff385c", presentation: "modal" },
+        }}
       ></Stack.Screen>
       <Stack.Screen
         name="Add Picture"
         component={ImageForm}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#ff385c", presentation: "modal" },
+        }}
       ></Stack.Screen>
       <Stack.Screen
         name="Add Features"
         component={AddFeatures}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#ff385c", presentation: "modal" },
+        }}
       ></Stack.Screen>
       <Stack.Screen
         name="Add Suggestion"
         component={SuggestionPage}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#ff385c", presentation: "modal" },
+        }}
       ></Stack.Screen>
       <Stack.Screen
         name="Location Preview"
         component={LocationPreview}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#ff385c", presentation: "modal" },
+        }}
       ></Stack.Screen>
     </Stack.Navigator>
   );
