@@ -8,7 +8,7 @@ export default function FormInput({
   placeholder,
   errorMessage,
 }) {
-  const [backgroundColor, setBackgroundColor] = React.useState("lightblue");
+  const [backgroundColor, setBackgroundColor] = React.useState("white");
 
   React.useEffect(() => {
     isValid ? null : setBackgroundColor("pink");
@@ -17,15 +17,17 @@ export default function FormInput({
   return (
     <SafeAreaView>
       <View>
-        {isValid ? null : <Text>{errorMessage}</Text>}
+        {isValid ? null : (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        )}
         <TextInput
           placeholder={placeholder}
           onChangeText={inputFunc}
           onFocus={() => {
-            setBackgroundColor("grey");
+            setBackgroundColor("#f7f7f7");
           }}
           onBlur={() => {
-            setBackgroundColor("lightblue");
+            setBackgroundColor("white");
           }}
           style={[styles.inputField, { backgroundColor }]}
         />
@@ -40,6 +42,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 15,
+  },
+  errorMessage: {
+    alignSelf: "center",
+    fontWeight: "bold",
   },
 });

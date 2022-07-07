@@ -1,4 +1,4 @@
-import { View, Button, StyleSheet } from "react-native";
+import { View, Button, StyleSheet, Pressable, Text } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormInput from "../../Components/FormInput";
@@ -89,7 +89,7 @@ export default function AddressForm({ navigation, route }) {
   }, [isSubmitted]);
   return (
     <SafeAreaView>
-      <View>
+      <View style={styles.formContainer}>
         <FormInput
           inputFunc={setBusinessName}
           isValid={businessNameValid}
@@ -120,28 +120,31 @@ export default function AddressForm({ navigation, route }) {
           placeholder={"Postcode"}
           errorMessage={"Invalid postcode"}
         />
-        <Button title="submit" onPress={handleSubmit}></Button>
       </View>
+      <Pressable onPress={handleSubmit} style={styles.submitButton}>
+        <Text style={styles.buttonText}>SUBMIT</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    width: "70%",
-    textAlign: "center",
-    alignSelf: "center",
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
+  formContainer: {
+    height: "85%",
   },
-  inputField: {
-    // backgroundColor: "lightblue",
-    width: "90%",
+  submitButton: {
+    backgroundColor: "#ff385c",
+    width: "40%",
     textAlign: "center",
     alignSelf: "center",
     margin: 10,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 15,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
