@@ -34,9 +34,9 @@ export default function AddressForm({ navigation, route }) {
       currLocationObj.LocationName = businessName;
       currLocationObj.Address = `${buildingNumber}, ${street}, ${city}`;
       currLocationObj.Postcode = postcode;
-      currLocationObj.Longitude = 1.23;
-      currLocationObj.Latitude = 2.45;
-      currLocationObj.CreatedBy = 1;
+      currLocationObj.Longitude = -2.238327215;
+      currLocationObj.Latitude = 53.47236293;
+      currLocationObj.CreatedBy = 101;
 
       return currLocationObj;
     });
