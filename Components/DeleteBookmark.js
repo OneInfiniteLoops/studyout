@@ -21,7 +21,7 @@ export default function DeleteBookmark({location,userLogin,setDeletedBookmark}) 
   }
 
   return (
-    <Button color= "#FFFFFF" title=" x  " onPress={()=>handleClick(location.LocationID,userLogin.ID)}/>
+    <Button color= "#FFFFFF"  title="x        " onPress={()=>handleClick(location.LocationID,userLogin.ID)}/>
 
   )
 }
