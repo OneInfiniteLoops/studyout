@@ -17,6 +17,7 @@ import { addReview } from "../../Utils/api";
 import { getLocationById } from "../../Utils/api";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AddBookmarkButton } from "../../Utils/AddBookmarkButton";
 
 export default function PlaceView(location) {
   const locationId = location.route.params.location.LocationID;
@@ -111,6 +112,7 @@ export default function PlaceView(location) {
               </Text>
             </>
           )}
+          <AddBookmarkButton></AddBookmarkButton>
           <Text style={styles.moreInfo}>Address:</Text>
           <Text style={styles.location_address}>
             {location.route.params["location"]["Address"]}
