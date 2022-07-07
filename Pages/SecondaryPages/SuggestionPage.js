@@ -1,4 +1,13 @@
-import { View, Pressable, StyleSheet, Text, TextInput } from "react-native";
+import {
+  View,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -33,30 +42,38 @@ export default function SuggestionPage({ navigation, route }) {
 
   return (
     <SafeAreaView>
-      <View style={styles.formContainer}>
-        <Text style={styles.header}>Suggestion of use</Text>
-        <Text style={styles.example}>
-          E.g: 2 hours of stay when you buy a drink
-        </Text>
-        <TextInput
-          onChangeText={setSuggestion}
-          placeholder="Let other users know if they need to do anything to use the space"
-          style={[styles.input, { backgroundColor }]}
-          multiline={true}
-          onFocus={() => {
-            setBackgroundColor("white");
-          }}
-          onBlur={() => {
-            setBackgroundColor("#f7f7f7");
-          }}
-        ></TextInput>
-        {isValid ? null : (
-          <Text style={styles.errorMessage}>Minimum 20 characters</Text>
-        )}
-        <Pressable onPress={handleSubmit} style={styles.submitButton}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
-      </View>
+      <KeyboardAvoidingView
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+        behavior={Platform.OS === "ios" ? "position" : null}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.formContainer}>
+            <Text style={styles.header}>Suggestion of use</Text>
+            <Text style={styles.example}>
+              E.g: 2 hours of stay when you buy a drink
+            </Text>
+            <TextInput
+              onChangeText={setSuggestion}
+              placeholder="Let other users know if they need to do anything to use the space"
+              style={[styles.input, { backgroundColor }]}
+              multiline={true}
+              onFocus={() => {
+                setBackgroundColor("white");
+              }}
+              onBlur={() => {
+                setBackgroundColor("#f7f7f7");
+              }}
+            ></TextInput>
+            {isValid ? null : (
+              <Text style={styles.errorMessage}>Minimum 20 characters</Text>
+            )}
+            <Pressable onPress={handleSubmit} style={styles.submitButton}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </Pressable>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

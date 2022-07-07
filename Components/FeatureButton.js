@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, Text } from "react-native";
+import { View, StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import React from "react";
 
 export default function FeatureButton({ feature, setFeaturesObj }) {
@@ -16,26 +16,42 @@ export default function FeatureButton({ feature, setFeaturesObj }) {
   };
 
   React.useEffect(() => {
-    isClicked ? setBackgroundColor("#ff385c") : setBackgroundColor("#f7f7f7");
+    isClicked ? setBackgroundColor("#ff385c") : setBackgroundColor("white");
     isClicked ? setColor("white") : setColor("black");
   }, [isClicked]);
 
   return (
-    <Pressable onPress={handleButton}>
-      <Text style={[styles.featureButton, { backgroundColor, color }]}>
+    // <View style={styles.container}>
+    <Pressable
+      style={[styles.featureButton, { backgroundColor, color }]}
+      onPress={handleButton}
+    >
+      <Text style={(styles.featureButtonText, { color: color })}>
         {feature}
       </Text>
     </Pressable>
+    // </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
   featureButton: {
-    width: "80%",
-    padding: 3,
-    margin: 2,
+    width: "45%",
+    padding: 10,
+    margin: 7,
+    alignItems: "center",
+    alignContent: "center",
     textAlign: "center",
     alignSelf: "center",
-    borderRadius: 5,
+    borderRadius: 15,
+    flex: "auto",
+  },
+  featureButtonText: {
+    color: "black",
   },
 });

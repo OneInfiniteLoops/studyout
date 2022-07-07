@@ -7,7 +7,7 @@ import FormInput from "../../Components/FormInput";
 export default function ImageForm({ navigation, route }) {
   const [imageUrl, setImageUrl] = React.useState("");
   const [submittedImage, setSubmittedImage] = React.useState(
-    "https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
+    "https://www.pulsewednesbury.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"
   );
   const [isValid, setIsValid] = React.useState(true);
   const { locationObj, setLocationObj, setLocationPostStatus } = route.params;
@@ -64,17 +64,18 @@ const styles = StyleSheet.create({
     height: "60%",
   },
   uploadButton: {
-    backgroundColor: "#ff385c",
+    backgroundColor: "#ffffff",
+    borderColor: "#ff385c",
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 15,
     width: "60%",
     textAlign: "center",
     alignSelf: "center",
-    margin: 10,
-    maginBottom: 10,
-    padding: 10,
-    borderRadius: 15,
+    maginBottom: 15,
     shadowColor: "black",
     shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
     shadowRadius: 5,
   },
   submitButton: {
@@ -82,17 +83,16 @@ const styles = StyleSheet.create({
     width: "40%",
     textAlign: "center",
     alignSelf: "center",
-    margin: 10,
-    marginTop: 40,
+    marginTop: 30,
     padding: 10,
     borderRadius: 15,
     shadowColor: "black",
     shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
     shadowRadius: 5,
   },
   uploadButtonText: {
-    color: "white",
+    color: "#ff385c",
     alignSelf: "center",
     textAlign: "center",
     fontWeight: "bold",
@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: 20,
   },
 });
