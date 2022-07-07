@@ -81,21 +81,21 @@ console.log(locationInfo)
           return (
             <View key={location.LocationID}>
             <TouchableOpacity
-              style= {styles.locationCard}
-              // {[
-            //     styles.locationCard,
-            //     // index === location.length - 1
-            //     //   ? { marginBottom: useBottomTabBarHeight() + 20 }
-            //     //   : { marginBottom: 10 },
-           
-
-                          
-            // ]}
+            style={[
+              styles.locationCard,
+              index === locationInfo.length - 1
+                ? { marginBottom: useBottomTabBarHeight() + 25 }
+                : { marginBottom: 10 },
+            ]}
               onPress={() => {
                 navigation.navigate("More information", { location });
               }}
             >
-              
+              <Image
+                source={{ uri: location.ImgUrl }}
+                style={styles.locationImage}
+              />
+              <View style={styles.textContainer}>
               <Text style={styles.locationName}>{location.LocationName}</Text>
               <Text style={styles.locationAddress}>
                 {location.Address}
@@ -103,13 +103,9 @@ console.log(locationInfo)
               <Text style={styles.locationAddress}>
                 {location.Postcode}
               </Text>
-              {/* <Text style={styles.opening_hours}>{location.opening_hours}</Text> */}
-              <Image
-                source={{ uri: location.ImgUrl }}
-                style={styles.locationImage}
-                
-              />
               <DeleteBookmark key={"del_" + location.LocationID}location={location} userLogin={userLogin} setDeletedBookmark={setDeletedBookmark}></DeleteBookmark>
+              </View>
+              
             </TouchableOpacity>
               
             </View> 
@@ -134,8 +130,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     flex: 1,
+    flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "flex-strt",
+    alignItems: "flex-start",
     backgroundColor: "white",
     shadowColor: "black",
     shadowOffset: { width: 2, height: 2 },
@@ -150,9 +147,12 @@ const styles = StyleSheet.create({
 
   },
   locationImage: {
-    width: 100 ,
-    height: 50,
+    width: "40%",
+    height: "100%",
     alignSelf: "center",
+    borderRadius: 15,
+    flexDirection: "row",
+    flex: 1,
   },
   locationAddress: {
     color: "#222222",
@@ -202,6 +202,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: "90%",
     marginBottom: 150,
+  },
+  textContainer: {
+    width: "60%",
+    marginLeft: 20,
   },
 });
 
