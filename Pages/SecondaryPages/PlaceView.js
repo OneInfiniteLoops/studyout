@@ -14,6 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 import { getReviewsByLocationId } from "../../Utils/api";
 import { getTimeDate } from "../../Utils/dayjs";
 import { addReview } from "../../Utils/api";
+import { getLocationById } from "../../Utils/api";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function PlaceView(location) {
   const locationId = location.route.params.location.LocationID;
@@ -24,8 +27,11 @@ export default function PlaceView(location) {
   const [reviewBody, setReviewBody] = useState("");
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const locationName = location.route.params.location.LocationName;
-
+  const [locationFeatures, setLocationFeatures] = useState(null);
+  const [fullLocationInfo, setFullLocationInfo] = useState(null);
+  const locationID = location.route.params.location.LocationID;
   const navigation = useNavigation();
+  const [isFeaturesLoading, setIsFeaturesLoading] = useState(true);
 
   useEffect(() => {
     getReviewsByLocationId(locationId)
@@ -38,6 +44,14 @@ export default function PlaceView(location) {
         setReviewLoadingError(true);
       });
   }, [reviewSubmitted]);
+
+  useEffect(() => {
+    getLocationById(locationId).then((res) => {
+      setFullLocationInfo(res.data);
+      setLocationFeatures(res.data.Features);
+      setIsFeaturesLoading(false);
+    });
+  }, [locationId]);
 
   return (
     <KeyboardAvoidingView
@@ -54,13 +68,56 @@ export default function PlaceView(location) {
           {location.route.params["location"]["LocationName"]}
         </Text>
         <View style={styles.locationInfo}>
-          <Text style={styles.moreInfo}>More information</Text>
-          <Text style={styles.features}>Features: 🌐🚻🥤🅿️🍽♿️</Text>
+          {locationFeatures && (
+            <>
+              <Text style={styles.facilities}>Facilities:</Text>
+              <Text style={styles.features}>
+                {locationFeatures && locationFeatures.Food && (
+                  <FontAwesome5 name="pizza-slice" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.Beverages && (
+                  <FontAwesome5 name="faucet" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.WiFi && (
+                  <FontAwesome5 name="wifi" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.Noisy && (
+                  <FontAwesome5 name="volume-up" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.NaturalLight && (
+                  <FontAwesome5 name="cloud-sun" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.FreeParking && (
+                  <FontAwesome5 name="parking" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.Toilets && (
+                  <FontAwesome5 name="restroom" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.WheelchairAccess && (
+                  <FontAwesome5 name="wheelchair" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.PetFriendly && (
+                  <FontAwesome5 name="paw" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.PowerSockets && (
+                  <FontAwesome5 name="plug" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.Vegan && (
+                  <FontAwesome5 name="leaf" size={24} color="#484848" />
+                )}{" "}
+                {locationFeatures && locationFeatures.PhoneSignal && (
+                  <FontAwesome5 name="signal" size={24} color="#484848" />
+                )}{" "}
+              </Text>
+            </>
+          )}
+          <Text style={styles.moreInfo}>Address:</Text>
           <Text style={styles.location_address}>
-            Address: {location.route.params["location"]["Address"]}
+            {location.route.params["location"]["Address"]}
           </Text>
+          <Text style={styles.moreInfo}>Usage:</Text>
           <Text style={styles.conditions}>
-            Usage suggestions: {location.route.params["location"]["Condition"]}
+            {location.route.params["location"]["Condition"]}
           </Text>
         </View>
         {reviewLoadingError && (
@@ -203,6 +260,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     margin: 5,
+  },
+  facilities: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 5,
+    marginBottom: 10,
   },
   rating: {
     fontSize: 20,
