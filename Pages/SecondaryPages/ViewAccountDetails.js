@@ -8,20 +8,14 @@ import {
   TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { UserLoginContext } from '../../Contexts/user'
-import {getBookmarksById, getLocationById}from  "../Utils/api"
-import { obtainBookmarkId } from "../Utils/obtainBookmarkId";
-import { async } from "@firebase/util";
-import { AuthErrorCodes, connectAuthEmulator } from "firebase/auth";
-
 
 
 function ViewAccountDetails () {
   const { userLogin } = React.useContext(UserLoginContext);
   return (
-    <SafeAreaView style={styles.safeareacontainer}>
-      <ScrollView>
+    // <SafeAreaView style={styles.safeareacontainer}>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
         <Text style={styles.avatar}>👤</Text>
           <Text style={styles.title}>{ userLogin.Username} </Text>
@@ -41,42 +35,45 @@ function ViewAccountDetails () {
               value={ userLogin.Email}
             />
 
-        <TouchableOpacity>
-          <Text style={styles.button}>Update my details</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Update my details</Text>
         </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    // </SafeAreaView>
   )
 }
 
 
 const styles = StyleSheet.create({
   safeareacontainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#f7f7f7"
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
   avatar: {
-    fontSize: 50,
+    marginTop:10,
+    fontSize: 40,
   },
-  title: {
-    fontSize: 25,
-    marginBottom: 30,
-    fontWeight:'bold'
+  title:{
+    fontSize:20,
+    fontWeight:'bold',
+    marginBottom:20,
   },
+
   message: {
-    fontSize: 20,
+    fontSize: 15,
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 36,
     marginRight: 36
   },
   input: {
-    fontSize: 18,
+    fontSize: 14,
     borderWidth: 1,
     padding: 12,
     width: '80%',
@@ -84,15 +81,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   button: {
-    fontSize: 20,
-    color: 'white',
-    width: 220,
-    marginTop: 20,
-    borderRadius: 10,
-    backgroundColor: '#c01c00',
+    backgroundColor: "#ff385c",
+    width: "70%",
+    margin: 15,
     padding: 10,
-    textAlign: 'center'
+    borderRadius: 15,
+    alignItems: "center",
   },
+  buttonText: {
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  scrollView: {
+    backgroundColor: "#f7f7f7",
+  },
+
 });
 
 export default ViewAccountDetails ;

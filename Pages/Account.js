@@ -1,15 +1,3 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
-// import { SafeAreaView } from 'react-native-safe-area-context'
-
-// export default function Account() {
-//   return (
-//     <SafeAreaView>
-//       <Text>Account</Text>
-//     </SafeAreaView>
-//   )
-// }
-
 import {
   View,
   Text,
@@ -27,18 +15,18 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { authentication } from "../firebase.config";
 import { getUserById } from "../Utils/api";
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().required("Please Enter your password"),
-  // .matches(
-  //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-  //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-  // ),
+  password: yup.string().required("Please enter your password")
+  .matches(
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+  )
 });
 
 export default function Account({ navigation }) {
@@ -56,11 +44,11 @@ export default function Account({ navigation }) {
       password: "",
     },
 
-    reValidateMode: "onSubmit",
+    reValidateMode: "onChange",
   });
 
   const signIn = (data) => {
-    // reset();
+    reset();
 
     signInWithEmailAndPassword(authentication, data.email, data.password)
       .then((userCred) => {
@@ -70,27 +58,16 @@ export default function Account({ navigation }) {
         });
       })
       .catch((err) => {
-        alert("There is an error");
+        alert("Log in unsuccessful");
       });
   };
-
-  function signOut() {
-    signOut(authentication)
-      .then(() => {
-        alert("Sign-out successful");
-        setUserLogin("");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }
 
   if (!userLogin) {
     return (
       <SafeAreaView style={styles.safeareacontainer}>
-        <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.loggedInContainer}>
           <Text style={styles.title}>StudyOut Login</Text>
-
           <Controller
             control={control}
             name="email"
@@ -128,20 +105,16 @@ export default function Account({ navigation }) {
             {errors.password ? errors.password.message : null}
           </Text>
 
-          <TouchableOpacity onPress={handleSubmit(signIn)}>
-            <Text style={styles.button}>Submit</Text>
+          <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(signIn)}>
+            <Text style={styles.buttonText}>Log in</Text>
           </TouchableOpacity>
 
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <Button
-              title="Register an account"
-              onPress={() => navigation.navigate("Register")}
-            />
+          <TouchableOpacity style={styles.regButton} onPress={() => navigation.navigate("Register")}>
+            <Text style={styles.regButtonText}>Register</Text>
+          </TouchableOpacity>
           </View>
-        </View>
-      </SafeAreaView>
+     </ScrollView>
+     </SafeAreaView>
     );
   }
 
@@ -163,8 +136,8 @@ export default function Account({ navigation }) {
         <View style={styles.item}>
           <Text style={styles.buttonText}>Delete my account</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.buttonText} onPress={() => setUserLogin("")}>
+        <TouchableOpacity style={styles.regButton}>
+          <Text style={styles.regButtonText} onPress={() => setUserLogin("")}>
             Log Out
           </Text>
         </TouchableOpacity>
@@ -175,25 +148,25 @@ export default function Account({ navigation }) {
 
 const styles = StyleSheet.create({
   safeareacontainer: {
+    backgroundColor: "#f7f7f7",
     flex: 1,
   },
   container: {
     flex: 1,
-    // backgroundColor: '#282828',
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
 
   loggedInContainer: {
     flex: 1,
-    // backgroundColor: '#282828',
     alignItems: "center",
     justifyContent: "flex-start",
   },
   title: {
     fontSize: 25,
+    marginTop: 30,
     marginBottom: 30,
-    marginTop: 16,
+    color: "#222222",
   },
   error: {
     fontSize: 16,
@@ -218,11 +191,34 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 100,
   },
+  loginButton: {
+    backgroundColor: "#ff385c",
+    padding: 12,
+    borderRadius: 15,
+    marginTop: 5,
+  },
   logoutButton: {
     backgroundColor: "#ff385c",
     padding: 12,
     borderRadius: 15,
     marginTop: 30,
+  },
+  regButton: {
+    backgroundColor: "#ffffff",
+    borderColor:"#ff385c",
+    borderWidth:1,
+    padding: 12,
+    borderRadius: 15,
+    marginTop: 30,
+  },
+  regButtonText:{
+    color:"#ff385c",
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "center",
   },
   buttonText: {
     width: 120,
@@ -247,5 +243,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     alignItems: "center",
+  },
+  scrollView: {
+    backgroundColor: "#f7f7f7",
   },
 });
