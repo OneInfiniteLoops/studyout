@@ -103,7 +103,10 @@ console.log(locationInfo)
               <Text style={styles.locationAddress}>
                 {location.Postcode}
               </Text>
+              <TouchableOpacity
+              style={styles.addButton}>
               <DeleteBookmark key={"del_" + location.LocationID}location={location} userLogin={userLogin} setDeletedBookmark={setDeletedBookmark}></DeleteBookmark>
+              </TouchableOpacity>
               </View>
               
             </TouchableOpacity>
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
     height: "20%",
     alignSelf: "center",
     borderRadius: 15,
-    padding: 10,
+    padding: 17,
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
@@ -207,6 +210,23 @@ const styles = StyleSheet.create({
     width: "60%",
     marginLeft: 20,
   },
+  addButton: {
+    backgroundColor: "#ff385c",
+    width: 37,
+    height: 37,
+    alignItems: "center",
+    borderRadius: 50,
+    position: "relative",
+    bottom: 90,
+    left: 180,
+    zIndex: 1,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    
+  },
 });
+
 
 export default Bookmarks;
