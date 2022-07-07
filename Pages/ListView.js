@@ -19,69 +19,13 @@ import { getLocationDistance } from "../Utils/getLocationDistance";
 import * as Location from "expo-location";
 import { getLocations } from "../Utils/api";
 
-const locations = [
-  {
-    location_id: 1,
-    location_name: "Costa Market Street",
-    location_address: "28 Market Street, Manchester M1 1PW England",
-    postcode: "M11PW",
-    latitude: "53.48376591153698",
-    longitude: "-2.242955959297516",
-    features: {
-      wifi: true,
-      food: true,
-      parking: true,
-    },
-    conditions: "Buy one coffee",
-    opening_hours: "9:00am - 5:00pm",
-    image_url:
-      "https://media-cdn.tripadvisor.com/media/photo-s/15/0a/f0/52/20181013-164708-largejpg.jpg",
-    created_by: "GarySum123",
-  },
-  {
-    location_id: 2,
-    location_name: "Manchester Central Library",
-    location_address: "St Peter's Square, Manchester M2 5PD",
-    postcode: "M2 5PD",
-    latitude: "53.478030039764135",
-    longitude: "-2.2446160630014624",
-    features: {
-      wifi: true,
-      food: true,
-      parking: false,
-    },
-    conditions: "None",
-    opening_hours: "9:00am - 5:00pm",
-    image_url:
-      "https://eu-assets.simpleview-europe.com/manchester2016/imageresizer/?image=%2Fdmsimgs%2FCentral_Library_publicity_photo.jpg_273973847.png&action=ProductDetail",
-    created_by: "CaolanExplores",
-  },
-  {
-    location_id: 3,
-    location_name: "Longsight Library",
-    location_address: "519 Stockport Rd, Longsight, Manchester M12 4NE",
-    postcode: "M12 4NE",
-    latitude: "53.458445275050494",
-    longitude: "-2.201442223181674",
-    features: {
-      wifi: true,
-      food: true,
-      parking: true,
-    },
-    conditions: "None",
-    opening_hours: "9:00am - 5:00pm",
-    image_url:
-      "https://i0.wp.com/manclibraries.blog/wp-content/uploads/2020/12/longsight-2.jpg?w=1280&ssl=1",
-    created_by: "GoCrazyM8",
-  },
-];
-
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 function ListView({ navigation }) {
   const [locationArray, setLocationArray] = useState([]);
   const [searchedLocation, setSearchedLocation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [locationPostStatus, setLocationPostStatus] = useState(false);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -110,19 +54,23 @@ function ListView({ navigation }) {
   }
 
   useEffect(() => {
-    getLocations().then((resArray) => {
-      setLocationArray(resArray);
-      if (userLocation !== null) {
-        setLocationArray(
-          getLocationDistance(
-            resArray,
-            Number(userLocation.coords.latitude),
-            Number(userLocation.coords.longitude)
-          )
-        );
-      }
-    });
-  }, []);
+    getLocations()
+      .then((resArray) => {
+        setLocationArray(resArray);
+        if (userLocation !== null) {
+          setLocationArray(
+            getLocationDistance(
+              resArray,
+              Number(userLocation.coords.latitude),
+              Number(userLocation.coords.longitude)
+            )
+          );
+        }
+      })
+      .then(() => {
+        setLocationPostStatus(false);
+      });
+  }, [locationPostStatus]);
 
   useEffect(() => {
     if (searchedLocation !== null) {
@@ -137,13 +85,10 @@ function ListView({ navigation }) {
   }, [searchedLocation]);
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        style={styles.searchBar}
-        keyboardShouldPersistTaps="always"
-        listViewDisplayed={false}
-      >
+    <SafeAreaView style={styles.backgroundColour}>
+      <ScrollView keyboardShouldPersistTaps="always" listViewDisplayed={false}>
         <GooglePlacesAutocomplete
+          styles={styles.searchBar}
           placeholder="Search location here"
           fetchDetails={true}
           onPress={(data, details = null) => {
@@ -161,7 +106,16 @@ function ListView({ navigation }) {
           }}
         />
       </ScrollView>
-      <ScrollView>
+      <TouchableOpacity
+        title="Add Study Space"
+        style={styles.addButton}
+        onPress={() => {
+          navigation.navigate("Add Location", { setLocationPostStatus });
+        }}
+      >
+        <Text style={styles.buttonText}>+</Text>
+      </TouchableOpacity>
+      <ScrollView style={styles.list}>
         {locationArray.map((location, index) => {
           return (
             <TouchableOpacity
@@ -173,18 +127,22 @@ function ListView({ navigation }) {
               ]}
               key={location.location_id}
               onPress={() => {
-                navigation.navigate("Space info", { location });
+                navigation.navigate("More information", { location });
               }}
             >
-              <Text style={styles.locationName}>{location.LocationName}</Text>
-              <Text style={styles.locationAddress}>{location.Address}</Text>
-              <Text style={styles.locationPostcode}>{location.Postcode}</Text>
-              <Text style={styles.Condition}>{location.Condition}</Text>
-              <Text style={styles.opening_hours}>{location.opening_hours}</Text>
               <Image
                 source={{ uri: location.ImgUrl }}
                 style={styles.locationImage}
               />
+              <View style={styles.textContainer}>
+                <Text style={styles.locationName}>{location.LocationName}</Text>
+                <Text style={styles.locationAddress}>{location.Address}</Text>
+                <Text style={styles.locationPostcode}>{location.Postcode}</Text>
+                <Text style={styles.Condition}>{location.Condition}</Text>
+                <Text style={styles.opening_hours}>
+                  {location.opening_hours}
+                </Text>
+              </View>
             </TouchableOpacity>
           );
         })}
@@ -194,47 +152,99 @@ function ListView({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  backgroundColour: { backgroundColor: "#f7f7f7" },
+  list: {
+    height: "100%",
+  },
+
+  addButton: {
+    backgroundColor: "#ff385c",
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    borderRadius: 50,
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 100,
+    right: 20,
+    zIndex: 1,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
   locationCard: {
-    backgroundColor: "lightblue",
-    width: "70%",
+    backgroundColor: "#f7f7f7",
+    width: "90%",
+    height: "20%",
     alignSelf: "center",
-    margin: 10,
+    borderRadius: 15,
     padding: 10,
-    borderRadius: 10,
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  locationImage: {
+    width: "40%",
+    height: "100%",
+    alignSelf: "center",
+    borderRadius: 15,
+    flexDirection: "row",
+    flex: 1,
+  },
+  textContainer: {
+    width: "60%",
+    marginLeft: 20,
   },
   locationName: {
-    fontSize: 22,
+    color: "#ff385c",
+    fontSize: 18,
     fontWeight: "bold",
     paddingBottom: 6,
   },
-  locationImage: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-    borderRadius: 10,
-  },
   locationAddress: {
-    fontSize: 18,
+    color: "#222222",
     paddingBottom: 6,
   },
   opening_hours: {
-    fontSize: 16,
     color: "green",
     paddingBottom: 10,
   },
+
   searchBar: {
-    marginTop: 20,
-    borderRadius: 10,
-    width: "80%",
-    alignSelf: "center",
-    fontSize: 20,
     textInputContainer: {
-      backgroundColor: "grey",
+      marginBottom: 10,
+      borderRadius: 10,
+      width: "90%",
+      alignSelf: "center",
+    },
+    listView: {
+      alignSelf: "center",
+      borderRadius: 15,
+      width: "90%",
+      marginBottom: 150,
     },
     textInput: {
-      height: 38,
+      height: 45,
+      borderRadius: 40,
       color: "#5d5d5d",
       fontSize: 16,
+      shadowColor: "black",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
     },
     predefinedPlacesDescription: {
       color: "#1faadb",

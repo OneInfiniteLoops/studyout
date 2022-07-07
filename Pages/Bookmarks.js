@@ -17,8 +17,7 @@ import {getBookmarksById, getLocationById}from  "../Utils/api"
 import { obtainBookmarkId } from "../Utils/obtainBookmarkId";
 import { async } from "@firebase/util";
 import { AuthErrorCodes, connectAuthEmulator } from "firebase/auth";
-//app.Get("/api/bookmarks/:user_id"
-
+import DeleteBookmark from "../Components/DeleteBookmark";
 
 
 function Bookmarks({ navigation }) {
@@ -26,7 +25,7 @@ function Bookmarks({ navigation }) {
   const [locationIds, setLocationIds] =  React.useState(null)
   const [locationInfo, setLocationInfo] =  React.useState(null)
   const [isLoading,setIsLoading]  = useState(true)
-    // userLogin.ID = 1
+  const [deletedBookmark, setDeletedBookmark] = useState([])
 
 
   useEffect(()=>{
@@ -38,7 +37,7 @@ function Bookmarks({ navigation }) {
         setLocationIds(allLocIds)
        })    
     }
-  ,[])
+  ,[deletedBookmark])
   
 
 useEffect(()=>{
@@ -55,29 +54,32 @@ if (locationIds !== null) {
   }
   getLocations()
 }
-},[locationIds])
+},[locationIds,deletedBookmark])
 
 if (isLoading) {
 return (
   <View style={styles.loading}>
-    <Text >Loading...</Text>
+    <Text >You have no bookmarks</Text>
   </View>
 )
 }
 
+if (locationInfo.length===0) {
+  return (
+    <View style={styles.loading}>
+      <Text >You have no bookmarks</Text>
+    </View>
+  )
+  }
+
+console.log(locationInfo)
   return (
     <SafeAreaView>
-       
       <ScrollView>
         <View>
-    
-    <Text>
-
-
-    </Text>
-
 { locationInfo.map((location, index) => {
           return (
+            <View key={location.LocationID}>
             <TouchableOpacity
               style={[
                 styles.locationCard,
@@ -85,9 +87,8 @@ return (
                   ? { marginBottom: useBottomTabBarHeight() + 20 }
                   : { marginBottom: 10 },
               ]}
-              key={locationInfo.location_id}
               onPress={() => {
-                navigation.navigate("Space info", { location });
+                navigation.navigate("More information", { location });
               }}
             >
               
@@ -104,12 +105,11 @@ return (
                 style={styles.locationImage}
               />
             </TouchableOpacity>
+              <DeleteBookmark key={"del_" + location.LocationID}location={location} userLogin={userLogin} setDeletedBookmark={setDeletedBookmark}></DeleteBookmark>
+            </View> 
           );
         })}
-
-
         </View>
-       
       </ScrollView>
     </SafeAreaView>
   );

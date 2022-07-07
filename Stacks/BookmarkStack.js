@@ -10,7 +10,7 @@ export default function BookmarksStack() {
       <Stack.Screen
         name="Bookmarks view"
         component={Bookmarks}
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
       ></Stack.Screen>
     </Stack.Navigator>
   );

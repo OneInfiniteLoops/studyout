@@ -12,6 +12,7 @@ import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GOOGLE_MAPS_KEY } from "@env";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { getLocations } from "../Utils/api";
 
 const locationsResults = [
   {
@@ -76,6 +77,7 @@ export default function Map({ navigation }) {
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
   const [searchedLocation, setSearchedLocation] = useState(null);
+  const [locationsOnMap, setLocationsOnMap] = useState([]);
 
   if (Platform.OS === "android") {
     useEffect(() => {
@@ -131,6 +133,12 @@ export default function Map({ navigation }) {
     }
   }, [userLocation]);
 
+  useEffect(() => {
+    getLocations().then((locationsArray) => {
+      setLocationsOnMap(locationsArray);
+    });
+  }, []);
+
   return (
     <View>
       <MapView
@@ -149,20 +157,20 @@ export default function Map({ navigation }) {
           altitude: 1000,
         }}
       >
-        {locationsResults.map((locationResult) => (
+        {locationsOnMap.map((eachLocationOnMap) => (
           <Marker
-            key={locationResult.location_id}
+            key={eachLocationOnMap.LocationID}
             coordinate={{
-              latitude: Number(locationResult.latitude),
-              longitude: Number(locationResult.longitude),
+              latitude: Number(eachLocationOnMap.Latitude),
+              longitude: Number(eachLocationOnMap.Longitude),
             }}
-            title={locationResult.location_name}
+            title={eachLocationOnMap.LocationName}
             onPress={() => {
-              setLocation(locationResult);
+              setLocation(eachLocationOnMap);
               mapRef.current.animateToRegion(
                 {
-                  latitude: Number(locationResult.latitude),
-                  longitude: Number(locationResult.longitude),
+                  latitude: Number(eachLocationOnMap.Latitude),
+                  longitude: Number(eachLocationOnMap.Longitude),
                   latitudeDelta: 0.0522,
                   longitudeDelta: 0.0421,
                 },
@@ -170,10 +178,10 @@ export default function Map({ navigation }) {
               );
             }}
           >
-            <Callout tooltip>
+            <Callout tooltip key={eachLocationOnMap.LocationID}>
               <View style={styles.locationCallout}>
                 <Text style={styles.locationCalloutText}>
-                  {locationResult.location_name}
+                  {eachLocationOnMap.LocationName}
                 </Text>
               </View>
               <View style={styles.arrowBorder} />
@@ -182,8 +190,9 @@ export default function Map({ navigation }) {
           </Marker>
         ))}
       </MapView>
-      <View style={styles.searchBar}>
+      <View style={styles.searchBarContainer}>
         <GooglePlacesAutocomplete
+          styles={styles.searchBar}
           placeholder="Search location here"
           fetchDetails={true}
           onPress={(data, details = null) => {
@@ -206,22 +215,22 @@ export default function Map({ navigation }) {
         <TouchableOpacity
           style={styles.locationCard}
           onPress={() => {
-            navigation.navigate("Space info", { location });
+            navigation.navigate("More information", { location });
           }}
         >
           <Image
-            source={{ uri: location.image_url }}
+            key={location.LocationID}
+            source={{ uri: location.ImgUrl }}
             style={styles.locationCardImage}
           />
           <View style={styles.textContainer}>
             <Text style={styles.locationCardTitle}>
-              {location.location_name}
+              {location.LocationName}
             </Text>
+            <Text style={styles.locationCardText}>{location.Address}</Text>
+            <Text style={styles.locationCardText}>{location.Postcode}</Text>
             <Text style={styles.locationCardText}>
-              {location.location_address}
-            </Text>
-            <Text style={styles.locationCardOpeningHours}>
-              {location.opening_hours}
+              Suggestions: {location.Condition}
             </Text>
           </View>
         </TouchableOpacity>
@@ -244,6 +253,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     padding: 8,
     width: 150,
+    borderradius: 15,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   arrow: {
     backgroundColor: "transparent",
@@ -273,7 +287,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "20%",
     alignSelf: "center",
-    borderRadius: 5,
+    borderRadius: 15,
     padding: 10,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 3 },
@@ -290,14 +304,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   locationCardTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#ff385c",
   },
   locationCardImage: {
     height: "100%",
     width: "50%",
-    borderRadius: 5,
+    borderRadius: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
@@ -305,10 +320,36 @@ const styles = StyleSheet.create({
   locationCardOpeningHours: {
     color: "green",
   },
-  searchBar: {
+  searchBarContainer: {
     position: "absolute",
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
     top: 50,
+  },
+  searchBar: {
+    textInputContainer: {
+      marginBottom: 10,
+      borderRadius: 10,
+      width: "90%",
+      alignSelf: "center",
+    },
+    listView: {
+      alignSelf: "center",
+      borderRadius: 15,
+      width: "90%",
+    },
+    textInput: {
+      height: 45,
+      borderRadius: 40,
+      color: "#5d5d5d",
+      fontSize: 16,
+      shadowColor: "black",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
+    },
+    predefinedPlacesDescription: {
+      color: "#1faadb",
+    },
   },
 });
