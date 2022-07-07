@@ -15,30 +15,27 @@ export default function FormInput({
   }, [isValid]);
 
   return (
-    <SafeAreaView>
-      <View>
-        {isValid ? null : (
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-        )}
-        <TextInput
-          placeholder={placeholder}
-          onChangeText={inputFunc}
-          onFocus={() => {
-            setBackgroundColor("#f7f7f7");
-          }}
-          onBlur={() => {
-            setBackgroundColor("white");
-          }}
-          style={[styles.inputField, { backgroundColor }]}
-        />
-      </View>
-    </SafeAreaView>
+    <View>
+      {isValid ? null : <Text style={styles.errorMessage}>{errorMessage}</Text>}
+      <TextInput
+        placeholder={placeholder}
+        onChangeText={inputFunc}
+        onFocus={() => {
+          setBackgroundColor("#f7f7f7");
+        }}
+        onBlur={() => {
+          setBackgroundColor("white");
+        }}
+        style={[styles.inputField, { backgroundColor }]}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   inputField: {
-    width: "90%",
+    width: "80%",
+    margin: "5%",
     textAlign: "center",
     alignSelf: "center",
     padding: 10,
