@@ -74,19 +74,23 @@ if (locationInfo.length===0) {
 
 console.log(locationInfo)
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView  style={styles.backgroundColour}>
+      <ScrollView keyboardShouldPersistTaps="always" listViewDisplayed={false}>
         <View>
 { locationInfo.map((location, index) => {
           return (
             <View key={location.LocationID}>
             <TouchableOpacity
-              style={[
-                styles.locationCard,
-                index === location.length - 1
-                  ? { marginBottom: useBottomTabBarHeight() + 20 }
-                  : { marginBottom: 10 },
-              ]}
+              style= {styles.locationCard}
+              // {[
+            //     styles.locationCard,
+            //     // index === location.length - 1
+            //     //   ? { marginBottom: useBottomTabBarHeight() + 20 }
+            //     //   : { marginBottom: 10 },
+           
+
+                          
+            // ]}
               onPress={() => {
                 navigation.navigate("More information", { location });
               }}
@@ -103,9 +107,11 @@ console.log(locationInfo)
               <Image
                 source={{ uri: location.ImgUrl }}
                 style={styles.locationImage}
+                
               />
-            </TouchableOpacity>
               <DeleteBookmark key={"del_" + location.LocationID}location={location} userLogin={userLogin} setDeletedBookmark={setDeletedBookmark}></DeleteBookmark>
+            </TouchableOpacity>
+              
             </View> 
           );
         })}
@@ -116,33 +122,52 @@ console.log(locationInfo)
 }
 
 const styles = StyleSheet.create({
+  backgroundColour: { backgroundColor: "#f7f7f7" },
+  list: {
+    height: "100%",
+  },
   locationCard: {
-    backgroundColor: "lightblue",
-    width: "70%",
+    backgroundColor: "#f7f7f7",
+    width: "90%",
+    height: "20%",
     alignSelf: "center",
-    margin: 10,
+    borderRadius: 15,
     padding: 10,
-    borderRadius: 10,
+    flex: 1,
+    flexWrap: "wrap",
+    alignItems: "flex-strt",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   locationName: {
-    fontSize: 22,
+    color: "#ff385c",
+    fontSize: 18,
     fontWeight: "bold",
     paddingBottom: 6,
+
   },
   locationImage: {
-    width: 100,
-    height: 100,
+    width: 100 ,
+    height: 50,
     alignSelf: "center",
-    borderRadius: 10,
   },
   locationAddress: {
-    fontSize: 18,
+    color: "#222222",
     paddingBottom: 6,
   },
   opening_hours: {
-    fontSize: 16,
     color: "green",
     paddingBottom: 10,
+  },
+  Bookmarks: {
+    alignSelf: "center",
+    borderRadius: 15,
+    width: "90%",
+    marginBottom: 150,
+    
   },
 
   input: {
@@ -168,8 +193,15 @@ const styles = StyleSheet.create({
   loading: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontWeight: 700,
     
+  },
+  listView: {
+    alignSelf: "center",
+    borderRadius: 15,
+    width: "90%",
+    marginBottom: 150,
   },
 });
 
