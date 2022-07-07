@@ -74,9 +74,9 @@ if (locationInfo.length===0) {
 
 console.log(locationInfo)
   return (
-    <SafeAreaView  style={styles.backgroundColour}>
-      <ScrollView keyboardShouldPersistTaps="always" listViewDisplayed={false}>
-        <View>
+      <ScrollView keyboardShouldPersistTaps="always" listViewDisplayed={false} style={styles.scrollArea}>
+      <View>
+        <Text></Text>
 { locationInfo.map((location, index) => {
           return (
             <View key={location.LocationID}>
@@ -116,7 +116,6 @@ console.log(locationInfo)
         })}
         </View>
       </ScrollView>
-    </SafeAreaView>
   );
 }
 
@@ -142,6 +141,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
   },
+ 
+
   locationName: {
     color: "#ff385c",
     fontSize: 18,
