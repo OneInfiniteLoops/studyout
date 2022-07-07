@@ -13,7 +13,6 @@ import { getBookmarksById } from "./api";
 
    const handleClick = (locationId, userId) => {
 
-    console.log(locationId,userId)
      postBookmark(locationId, userId).then(()=>{
        alert("This bookmark has been added")
        })
@@ -31,7 +30,7 @@ import { getBookmarksById } from "./api";
    if (isLoading) {
     return (
       <View >
-        <Text >Loading...</Text>
+        <Text >You have no Bookmarks</Text>
       </View>
     )
     }
@@ -44,6 +43,7 @@ import { getBookmarksById } from "./api";
 
 
    if (typeof allBookmarksById === "undefined") {
+
      return (
       <Button title="♥️" onPress={()=>handleClick(locationId,userId)}/>
     )}
