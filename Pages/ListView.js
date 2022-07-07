@@ -137,7 +137,6 @@ function ListView({ navigation }) {
               <View style={styles.textContainer}>
                 <Text style={styles.locationName}>{location.LocationName}</Text>
                 <Text style={styles.locationAddress}>{location.Address}</Text>
-                <Text style={styles.locationPostcode}>{location.Postcode}</Text>
                 <Text style={styles.Condition}>{location.Condition}</Text>
                 <Text style={styles.opening_hours}>
                   {location.opening_hours}
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
   },
   locationImage: {
     width: "40%",
-    height: "100%",
+    aspectRatio: 1,
     alignSelf: "center",
     borderRadius: 15,
     flexDirection: "row",
@@ -215,6 +214,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   locationAddress: {
+    fontWeight: "bold",
     color: "#222222",
     paddingBottom: 6,
   },

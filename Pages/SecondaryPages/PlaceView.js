@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   KeyboardAvoidingView,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -16,8 +17,7 @@ import { getTimeDate } from "../../Utils/dayjs";
 import { addReview } from "../../Utils/api";
 import { getLocationById } from "../../Utils/api";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AddBookmarkButton } from "../../Utils/AddBookmarkButton";
+import { FontAwesome } from "@expo/vector-icons"; 
 
 export default function PlaceView(location) {
   const locationId = location.route.params.location.LocationID;
@@ -33,6 +33,7 @@ export default function PlaceView(location) {
   const locationID = location.route.params.location.LocationID;
   const navigation = useNavigation();
   const [isFeaturesLoading, setIsFeaturesLoading] = useState(true);
+
 
   useEffect(() => {
     getReviewsByLocationId(locationId)
@@ -68,6 +69,14 @@ export default function PlaceView(location) {
         <Text style={styles.location_name}>
           {location.route.params["location"]["LocationName"]}
         </Text>
+        <TouchableOpacity
+          style={styles.bookmarkButton}
+          onPress={() => {
+            alert("Bookmark added");
+          }}
+        >
+          <FontAwesome name="bookmark" size={32} color="#ff385c" />
+        </TouchableOpacity>
         <View style={styles.locationInfo}>
           {locationFeatures && (
             <>
@@ -112,7 +121,6 @@ export default function PlaceView(location) {
               </Text>
             </>
           )}
-          <AddBookmarkButton></AddBookmarkButton>
           <Text style={styles.moreInfo}>Address:</Text>
           <Text style={styles.location_address}>
             {location.route.params["location"]["Address"]}
@@ -309,6 +317,12 @@ const styles = StyleSheet.create({
   created_by: {
     padding: 10,
   },
+  bookmarkButton: {
+    position: "absolute",
+    left: 340,
+    marginTop: 320,
+    zIndex: 1,
+  },
   loading: {
     flex: 1,
     alignItems: "center",
@@ -317,4 +331,4 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#f7f7f7",
   },
-  });
+});

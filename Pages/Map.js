@@ -227,10 +227,9 @@ export default function Map({ navigation }) {
             <Text style={styles.locationCardTitle}>
               {location.LocationName}
             </Text>
-            <Text style={styles.locationCardText}>{location.Address}</Text>
-            <Text style={styles.locationCardText}>{location.Postcode}</Text>
+            <Text style={styles.locationAddressText}>{location.Address}</Text>
             <Text style={styles.locationCardText}>
-              Suggestions: {location.Condition}
+              {location.Condition.substring(0, 121)}...
             </Text>
           </View>
         </TouchableOpacity>
@@ -304,10 +303,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   locationCardTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 5,
     color: "#ff385c",
+  },
+  locationAddressText: {
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   locationCardImage: {
     height: "100%",
@@ -326,6 +329,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     top: 50,
   },
+
   searchBar: {
     textInputContainer: {
       marginBottom: 10,
