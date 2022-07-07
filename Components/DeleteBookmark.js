@@ -1,4 +1,4 @@
-import { Button, View, Text } from "react-native";
+import { Button, View, Text , StyleSheet} from "react-native";
 import React from "react";
 import { deleteBookmark } from "../Utils/api";
 export default function DeleteBookmark({location,userLogin,setDeletedBookmark}) {
@@ -21,6 +21,15 @@ export default function DeleteBookmark({location,userLogin,setDeletedBookmark}) 
   }
 
   return (
-    <Button title="[from delete bookmark component]" onPress={()=>handleClick(location.LocationID,userLogin.ID)}/>
+    <Button style={styles.locationName} title=" delete bookmark " onPress={()=>handleClick(location.LocationID,userLogin.ID)}/>
+
   )
 }
+
+const styles = StyleSheet.create({
+  locationName: {
+    alignItems: "center",
+  },
+
+})
+
