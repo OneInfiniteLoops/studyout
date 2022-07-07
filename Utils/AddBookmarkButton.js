@@ -4,6 +4,10 @@ import React from "react";
 import Bookmarks from "../Pages/Bookmarks";
 import { useEffect, useState} from "react";
 import { getBookmarksById } from "./api";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome5 } from "@expo/vector-icons";
+
+
 
  export default function AddBookmarkButton ({locationId, userId}) {
   
@@ -45,12 +49,12 @@ import { getBookmarksById } from "./api";
    if (typeof allBookmarksById === "undefined") {
 
      return (
-      <Button title="♥️" onPress={()=>handleClick(locationId,userId)}/>
-    )}
+      <Ionicons name="md-checkmark-circle" size={32} color="green"  onPress={()=>handleClick(locationId,userId)}/>
+      )}
    else {
     if ((allBookmarksById.filter((obj)=> (obj.UserId ===userId && obj.LocationId===locationId))).length === 0) {
       return (
-        <Button title="♥️" onPress={()=>handleClick(locationId,userId)}/>
+        <FontAwesome5 name="bookmark" size={24} color="black"  onPress={()=>handleClick(locationId,userId)}/>
       )
     }
     else {
