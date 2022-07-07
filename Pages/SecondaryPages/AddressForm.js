@@ -1,4 +1,14 @@
-import { View, Button, StyleSheet, Pressable, Text } from "react-native";
+import {
+  View,
+  Button,
+  StyleSheet,
+  Pressable,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormInput from "../../Components/FormInput";
@@ -89,61 +99,75 @@ export default function AddressForm({ navigation, route }) {
   }, [isSubmitted]);
   return (
     <SafeAreaView>
-      <View style={styles.formContainer}>
-        <FormInput
-          inputFunc={setBusinessName}
-          isValid={businessNameValid}
-          placeholder={"Business Name"}
-          errorMessage={"Input required"}
-        />
-        <FormInput
-          inputFunc={setBuildingNumber}
-          isValid={buildingNumberValid}
-          placeholder={"Building Number"}
-          errorMessage={"Input required"}
-        />
-        <FormInput
-          inputFunc={setStreet}
-          isValid={streetValid}
-          placeholder={"Street"}
-          errorMessage={"Input required"}
-        />
-        <FormInput
-          inputFunc={setCity}
-          isValid={cityValid}
-          placeholder={"City"}
-          errorMessage={"Input required"}
-        />
-        <FormInput
-          inputFunc={setPostCode}
-          isValid={postcodeValid}
-          placeholder={"Postcode"}
-          errorMessage={"Invalid postcode"}
-        />
-      </View>
-      <Pressable onPress={handleSubmit} style={styles.submitButton}>
-        <Text style={styles.buttonText}>SUBMIT</Text>
-      </Pressable>
+      <KeyboardAvoidingView
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+        behavior={Platform.OS === "ios" ? "position" : null}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView style={styles.formContainer}>
+            <FormInput
+              style={styles.input}
+              inputFunc={setBusinessName}
+              isValid={businessNameValid}
+              placeholder={"Business Name"}
+              errorMessage={"Input required"}
+            />
+            <FormInput
+              style={styles.input}
+              inputFunc={setBuildingNumber}
+              isValid={buildingNumberValid}
+              placeholder={"Building Number"}
+              errorMessage={"Input required"}
+            />
+            <FormInput
+              style={styles.input}
+              inputFunc={setStreet}
+              isValid={streetValid}
+              placeholder={"Street"}
+              errorMessage={"Input required"}
+            />
+            <FormInput
+              style={styles.input}
+              inputFunc={setCity}
+              isValid={cityValid}
+              placeholder={"City"}
+              errorMessage={"Input required"}
+            />
+            <FormInput
+              style={styles.input}
+              inputFunc={setPostCode}
+              isValid={postcodeValid}
+              placeholder={"Postcode"}
+              errorMessage={"Invalid postcode"}
+            />
+            <Pressable onPress={handleSubmit} style={styles.submitButton}>
+              <Text style={styles.buttonText}>SUBMIT</Text>
+            </Pressable>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   formContainer: {
-    height: "85%",
+    alignSelf: "center",
+    width: "100%",
   },
   submitButton: {
     backgroundColor: "#ff385c",
     width: "40%",
+    marginTop: "10%",
     textAlign: "center",
     alignSelf: "center",
-    margin: 10,
     padding: 10,
     borderRadius: 15,
   },
   buttonText: {
     color: "white",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
   },
