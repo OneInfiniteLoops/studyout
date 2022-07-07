@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     position: "relative",
-    bottom: 90,
+    bottom: 100,
     left: 180,
     zIndex: 1,
     shadowColor: "black",
