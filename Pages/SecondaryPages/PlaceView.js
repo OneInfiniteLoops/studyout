@@ -315,4 +315,4 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#f7f7f7",
   },
-});
+  });
