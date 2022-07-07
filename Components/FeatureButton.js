@@ -1,8 +1,9 @@
-import { Button, Pressable, Text } from "react-native";
+import { StyleSheet, Pressable, Text } from "react-native";
 import React from "react";
 
 export default function FeatureButton({ feature, setFeaturesObj }) {
-  const [buttonColor, setButtonColor] = React.useState("grey");
+  const [backgroundColor, setBackgroundColor] = React.useState("grey");
+  const [color, setColor] = React.useState("black");
   const [isClicked, setIsClicked] = React.useState(false);
 
   const handleButton = () => {
@@ -15,24 +16,26 @@ export default function FeatureButton({ feature, setFeaturesObj }) {
   };
 
   React.useEffect(() => {
-    isClicked ? setButtonColor("lightgreen") : setButtonColor("lightgrey");
+    isClicked ? setBackgroundColor("#ff385c") : setBackgroundColor("#f7f7f7");
+    isClicked ? setColor("white") : setColor("black");
   }, [isClicked]);
 
   return (
     <Pressable onPress={handleButton}>
-      <Text
-        style={{
-          backgroundColor: buttonColor,
-          width: "80%",
-          padding: 3,
-          margin: 2,
-          textAlign: "center",
-          alignSelf: "center",
-          borderRadius: 5,
-        }}
-      >
+      <Text style={[styles.featureButton, { backgroundColor, color }]}>
         {feature}
       </Text>
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  featureButton: {
+    width: "80%",
+    padding: 3,
+    margin: 2,
+    textAlign: "center",
+    alignSelf: "center",
+    borderRadius: 5,
+  },
+});
